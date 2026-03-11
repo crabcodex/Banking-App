@@ -13,7 +13,9 @@
     "test": "turbo test",
     "typecheck": "turbo typecheck",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,json,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "db:generate": "drizzle-kit generate --config=packages/core/event-store/drizzle.config.ts",
+    "db:migrate": "drizzle-kit migrate --config=packages/core/event-store/drizzle.config.ts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.2.0",
