@@ -1,8 +1,8 @@
 import { inject, injectable } from 'tsyringe';
 import { eq } from 'drizzle-orm';
 import type { ISnapshotStore, AggregateSnapshot } from '@bank/shared';
-import { DrizzleProvider } from './PgliteDbProvider';
-import { snapshots } from './schema';
+import { DrizzleProvider } from './DrizzleProvider';
+import { snapshots } from './schemas';
 
 /**
  * Implementacion de ISnapshotStore con Drizzle + PGlite.

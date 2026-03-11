@@ -1,7 +1,7 @@
 import { PGlite } from '@electric-sql/pglite';
 import { drizzle, PgliteDatabase } from 'drizzle-orm/pglite';
 import { injectable } from 'tsyringe';
-import * as schema from './schema';
+import * as schema from './schemas';
 
 export type DrizzleDb = PgliteDatabase<typeof schema>;
 

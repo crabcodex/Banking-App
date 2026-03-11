@@ -1,2 +1,2 @@
 export { ProjectionRunner } from './ProjectionRunner';
-export { DrizzleProjectionCheckpoint } from './PgliteProjectionCheckpoint';
+export { DrizzleProjectionCheckpoint } from './DrizzleProjectionCheckpoint';

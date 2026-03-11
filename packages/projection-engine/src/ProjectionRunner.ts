@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 import type { IEventStore, IProjection, StoredEvent } from '@bank/shared';
-import { DrizzleProjectionCheckpoint } from './PgliteProjectionCheckpoint';
+import { DrizzleProjectionCheckpoint } from './DrizzleProjectionCheckpoint';
 
 /**
  * Motor de proyecciones catch-up.

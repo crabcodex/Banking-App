@@ -1,5 +1,5 @@
-export { DrizzleProvider } from './DrizzleDbProvider';
-export type { DrizzleDb } from './DrizzleDbProvider';
+export { DrizzleProvider } from './DrizzleProvider';
+export type { DrizzleDb } from './DrizzleProvider';
 export { DrizzleEventStore } from './DrizzleEventStore';
 export { DrizzleSnapshotStore } from './DrizzleSnapshotStore';
 export { InMemoryEventBus } from './InMemoryEventBus';

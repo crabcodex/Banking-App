@@ -2,8 +2,8 @@ import { inject, injectable } from 'tsyringe';
 import { eq, gt, asc } from 'drizzle-orm';
 import type { IEventStore, StoredEvent, EventStream, DomainEvent, StreamVersion } from '@bank/shared';
 import { ConcurrencyError } from '@bank/shared';
-import { DrizzleProvider } from './PgliteDbProvider';
-import { events } from './schema';
+import { DrizzleProvider } from './DrizzleProvider';
+import { events } from './schemas';
 
 /**
  * Implementacion de IEventStore con Drizzle + PGlite.

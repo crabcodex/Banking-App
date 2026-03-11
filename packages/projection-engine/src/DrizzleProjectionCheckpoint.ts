@@ -1,7 +1,8 @@
 import { inject, injectable } from 'tsyringe';
 import { eq } from 'drizzle-orm';
 import { DrizzleProvider } from '@bank/event-store';
-import { projectionCheckpoints } from '@bank/event-store/schema';
+import { schemas } from '@bank/event-store';
+const { projectionCheckpoints } = schemas;
 
 /**
  * Almacena el checkpoint (ultima posicion global procesada) de cada proyeccion.
