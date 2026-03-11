@@ -14,18 +14,6 @@
   "dependencies": {
     "@bank/shared": "workspace:*",
     "@bank/event-store": "workspace:*",
-    "@bank/projection-engine": "workspace:*",
-    "express": "^4.21.0",
-    "cors": "^2.8.5",
-    "pino": "^9.0.0",
-    "pino-http": "^10.0.0",
-    "reflect-metadata": "^0.2.2",
-    "tsyringe": "^4.8.0",
-    "zod": "^3.23.0"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/cors": "^2.8.17",
-    "tsx": "^4.7.0"
+    "@bank/projection-engine": "workspace:*"
   }
 }

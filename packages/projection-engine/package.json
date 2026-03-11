@@ -12,9 +12,6 @@
   },
   "dependencies": {
     "@bank/shared": "workspace:*",
-    "@bank/event-store": "workspace:*",
-    "drizzle-orm": "^0.36.0",
-    "reflect-metadata": "^0.2.2",
-    "tsyringe": "^4.8.0"
+    "@bank/event-store": "workspace:*"
   }
 }
