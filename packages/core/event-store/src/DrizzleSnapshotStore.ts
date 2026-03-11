@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 import { eq } from 'drizzle-orm';
 import type { ISnapshotStore, AggregateSnapshot } from '@bank/shared';
-import { DrizzleProvider } from './DrizzleProvider';
+import { WriteDrizzleProvider } from './DrizzleProvider';
 import { snapshots } from './schemas/index';
 
 /**
@@ -10,7 +10,7 @@ import { snapshots } from './schemas/index';
  */
 @injectable()
 export class DrizzleSnapshotStore implements ISnapshotStore {
-  constructor(@inject('DrizzleProvider') private readonly provider: DrizzleProvider) {}
+  constructor(@inject('WriteDrizzleProvider') private readonly provider: WriteDrizzleProvider) {}
 
   async load(aggregateId: string): Promise<AggregateSnapshot | null> {
     const rows = await this.provider.db

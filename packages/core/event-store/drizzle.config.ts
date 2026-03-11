@@ -1,8 +1,8 @@
 import { defineConfig } from 'drizzle-kit';
-import path from 'path';
 
+/** Migraciones para la Write DB (Event Store: events + snapshots). */
 export default defineConfig({
-  schema: path.join(import.meta.dirname, 'src/schemas/index.ts'),
-  out: path.join(import.meta.dirname, 'drizzle'),
+  schema: './packages/core/event-store/src/schemas/index.ts',
+  out: './packages/core/event-store/drizzle',
   dialect: 'postgresql',
 });

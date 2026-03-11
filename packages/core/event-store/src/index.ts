@@ -1,6 +1,6 @@
-export { DrizzleProvider } from './DrizzleProvider';
-export type { DrizzleDb } from './DrizzleProvider';
+export { WriteDrizzleProvider } from './DrizzleProvider';
+export type { WriteDb } from './DrizzleProvider';
 export { DrizzleEventStore } from './DrizzleEventStore';
 export { DrizzleSnapshotStore } from './DrizzleSnapshotStore';
 export { InMemoryEventBus } from './InMemoryEventBus';
-export * as schemas from './schemas/index';
+export * as writeSchemas from './schemas/index';

@@ -1,16 +1,15 @@
 import { inject, injectable } from 'tsyringe';
 import { eq } from 'drizzle-orm';
-import { DrizzleProvider } from '@bank/event-store';
-import { schemas } from '@bank/event-store';
-const { projectionCheckpoints } = schemas;
+import { ReadDrizzleProvider } from './ReadDrizzleProvider';
+import { projectionCheckpoints } from './schemas/index';
 
 /**
  * Almacena el checkpoint (ultima posicion global procesada) de cada proyeccion.
- * Usa Drizzle sobre PGlite.
+ * Usa Drizzle sobre PGlite (Read DB).
  */
 @injectable()
 export class DrizzleProjectionCheckpoint {
-  constructor(@inject('DrizzleProvider') private readonly provider: DrizzleProvider) {}
+  constructor(@inject('ReadDrizzleProvider') private readonly provider: ReadDrizzleProvider) {}
 
   async getLastPosition(projectionName: string): Promise<number> {
     const rows = await this.provider.db

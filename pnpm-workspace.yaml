@@ -1,0 +1,10 @@
+packages:
+  - packages/core/*
+  - packages/contexts/*
+  - packages/server/*
+  - apps/*
+onlyBuiltDependencies:
+  - '@swc/core'
+  - esbuild
+ignoredBuiltDependencies:
+  - msw

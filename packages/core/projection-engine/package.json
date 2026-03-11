@@ -12,7 +12,6 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@bank/shared": "*",
-    "@bank/event-store": "*"
+    "@bank/shared": "workspace:*"
   }
 }

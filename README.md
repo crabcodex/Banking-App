@@ -4,8 +4,8 @@ Sistema bancario digital con Event Sourcing + CQRS + DDD.
 
 ## Requisitos
 
-- **Node.js** 20+
-- **npm** 10+ (usa workspaces nativos)
+- **Node.js** 24+
+- **pnpm** 10+ (gestor de paquetes del monorepo)
 
 ## Primeros pasos
 
@@ -15,16 +15,19 @@ git clone <url-del-repo>
 cd Banking-App
 
 # 2. Instalar dependencias
-npm install
+pnpm install
 
-# 3. Generar llaves JWT (RS256) para autenticación
-npm run generate-keys
+# 3. Aprobar build scripts (primera vez)
+pnpm approve-builds
 
-# 4. Generar migraciones de base de datos
-npm run db:generate
+# 4. Generar llaves JWT (RS256) para autenticación
+pnpm generate-keys
 
-# 5. Arrancar backend (puerto 3000) y frontend (Vite)
-npm run dev
+# 5. Generar migraciones de base de datos
+pnpm db:generate
+
+# 6. Arrancar backend (puerto 3000) y frontend (Vite)
+pnpm dev
 ```
 
 > **No se necesita PostgreSQL externo.** El backend usa PGlite (PostgreSQL embebido en Node.js). Las migraciones se aplican automáticamente al arrancar.
@@ -58,14 +61,15 @@ apps/
 
 | Comando | Descripción |
 |---|---|
-| `npm run dev` | Arranca backend y frontend en modo desarrollo |
-| `npm run build` | Compila todos los paquetes |
-| `npm run typecheck` | Verifica tipos en todos los paquetes |
-| `npm run test` | Ejecuta tests (Vitest) |
-| `npm run lint` | Ejecuta linter |
-| `npm run format` | Formatea código con Prettier |
-| `npm run db:generate` | Genera migraciones SQL desde los schemas de Drizzle |
-| `npm run db:migrate` | Aplica migraciones pendientes |
+| `pnpm dev` | Arranca backend y frontend en modo desarrollo |
+| `pnpm build` | Compila todos los paquetes |
+| `pnpm typecheck` | Verifica tipos en todos los paquetes |
+| `pnpm test` | Ejecuta tests (Vitest) |
+| `pnpm lint` | Ejecuta linter |
+| `pnpm format` | Formatea código con Prettier |
+| `pnpm db:generate` | Genera migraciones para ambas bases (Write + Read) |
+| `pnpm db:generate:write` | Genera migraciones solo para la Write DB (Event Store) |
+| `pnpm db:generate:read` | Genera migraciones solo para la Read DB (Proyecciones) |
 
 ## Variables de entorno
 
@@ -75,7 +79,8 @@ Todas tienen valores por defecto para desarrollo local. No se requiere archivo `
 |---|---|---|
 | `NODE_ENV` | `development` | Entorno de ejecución |
 | `PORT` | `3000` | Puerto del API |
-| `PGLITE_DATA_DIR` | (memoria) | Ruta para persistir PGlite en disco |
+| `PGLITE_WRITE_DIR` | (memoria) | Ruta para persistir Write DB (Event Store) en disco |
+| `PGLITE_READ_DIR` | (memoria) | Ruta para persistir Read DB (Proyecciones) en disco |
 | `JWT_PRIVATE_KEY_PATH` | `./keys/private.pem` | Llave privada RS256 |
 | `JWT_PUBLIC_KEY_PATH` | `./keys/public.pem` | Llave pública RS256 |
 | `JWT_ACCESS_EXPIRY` | `15m` | Expiración del access token |
@@ -88,7 +93,7 @@ Todas tienen valores por defecto para desarrollo local. No se requiere archivo `
 Los schemas de Drizzle en `packages/core/event-store/src/schemas/` son la **fuente de verdad**. Al cambiar un schema:
 
 ```bash
-npm run db:generate   # genera migración SQL
+pnpm db:generate   # genera migración SQL
 # reiniciar el backend — aplica migraciones automáticamente
 ```
 
@@ -101,8 +106,8 @@ npm run db:generate   # genera migración SQL
 ## Testing
 
 ```bash
-npm run test              # todos los tests
-npm run test -- --watch   # modo watch
+pnpm test              # todos los tests
+pnpm test --filter @bank/shared -- --watch   # modo watch en un paquete
 ```
 
 Cobertura mínima: 80% statements. Patrón de tests: `Given (eventos) → When (comando) → Then (eventos emitidos)`.

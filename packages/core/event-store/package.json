@@ -12,6 +12,6 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@bank/shared": "*"
+    "@bank/shared": "workspace:*"
   }
 }

@@ -9,7 +9,8 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(3000),
 
   // PGlite
-  PGLITE_DATA_DIR: z.string().optional(),
+  PGLITE_WRITE_DIR: z.string().optional(),
+  PGLITE_READ_DIR: z.string().optional(),
 
   // JWT
   JWT_PRIVATE_KEY_PATH: z.string().default('./keys/private.pem'),

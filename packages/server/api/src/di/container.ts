@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { container } from 'tsyringe';
-import { DrizzleProvider, DrizzleEventStore, DrizzleSnapshotStore, InMemoryEventBus } from '@bank/event-store';
-import { ProjectionRunner, DrizzleProjectionCheckpoint } from '@bank/projection-engine';
+import { WriteDrizzleProvider, DrizzleEventStore, DrizzleSnapshotStore, InMemoryEventBus } from '@bank/event-store';
+import { ReadDrizzleProvider, ProjectionRunner, DrizzleProjectionCheckpoint } from '@bank/projection-engine';
 import type { EnvConfig } from '../config/env';
 
 /**
@@ -9,10 +9,15 @@ import type { EnvConfig } from '../config/env';
  * Se invoca una sola vez al iniciar la aplicacion.
  */
 export async function setupContainer(config: EnvConfig): Promise<void> {
-  // Base de datos Drizzle + PGlite
-  const drizzleProvider = new DrizzleProvider();
-  await drizzleProvider.initialize(config.PGLITE_DATA_DIR);
-  container.register('DrizzleProvider', { useValue: drizzleProvider });
+  // Write DB — Event Store (events + snapshots)
+  const writeProvider = new WriteDrizzleProvider();
+  await writeProvider.initialize(config.PGLITE_WRITE_DIR);
+  container.register('WriteDrizzleProvider', { useValue: writeProvider });
+
+  // Read DB — Proyecciones (read models + checkpoints)
+  const readProvider = new ReadDrizzleProvider();
+  await readProvider.initialize(config.PGLITE_READ_DIR);
+  container.register('ReadDrizzleProvider', { useValue: readProvider });
 
   // Event Store
   container.register('IEventStore', { useClass: DrizzleEventStore });

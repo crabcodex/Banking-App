@@ -5,27 +5,27 @@ import { injectable } from 'tsyringe';
 import path from 'path';
 import * as schema from './schemas/index';
 
-export type WriteDb = PgliteDatabase<typeof schema>;
+export type ReadDb = PgliteDatabase<typeof schema>;
 
 const migrationsFolder = path.join(import.meta.dirname, '..', 'drizzle');
 
 /**
- * Proveedor de Drizzle sobre PGlite para la base de datos de ESCRITURA.
+ * Proveedor de Drizzle sobre PGlite para la base de datos de LECTURA.
  *
- * Gestiona el Event Store (events + snapshots).
+ * Gestiona las proyecciones (read models) y sus checkpoints.
  *
  * - Sin dataDir: base de datos en memoria (ideal para tests).
  * - Con dataDir: persiste en disco (desarrollo local).
  *
- * Aplica migraciones generadas por drizzle-kit (npm run db:generate:write).
+ * Aplica migraciones generadas por drizzle-kit (npm run db:generate:read).
  */
 @injectable()
-export class WriteDrizzleProvider {
+export class ReadDrizzleProvider {
   private client: PGlite | null = null;
-  private _db: WriteDb | null = null;
+  private _db: ReadDb | null = null;
 
-  get db(): WriteDb {
-    if (!this._db) throw new Error('WriteDrizzleProvider no inicializado. Llamar initialize() primero.');
+  get db(): ReadDb {
+    if (!this._db) throw new Error('ReadDrizzleProvider no inicializado. Llamar initialize() primero.');
     return this._db;
   }
 

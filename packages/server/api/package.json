@@ -7,14 +7,14 @@
   "types": "src/index.ts",
   "scripts": {
     "build": "tsc",
-    "dev": "tsx watch src/server.ts",
+    "dev": "node --import @swc-node/register/esm-register --watch src/server.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@bank/shared": "*",
-    "@bank/event-store": "*",
-    "@bank/projection-engine": "*"
+    "@bank/shared": "workspace:*",
+    "@bank/event-store": "workspace:*",
+    "@bank/projection-engine": "workspace:*"
   }
 }

@@ -2,7 +2,7 @@ import { inject, injectable } from 'tsyringe';
 import { eq, gt, asc } from 'drizzle-orm';
 import type { IEventStore, StoredEvent, EventStream, DomainEvent, StreamVersion } from '@bank/shared';
 import { ConcurrencyError } from '@bank/shared';
-import { DrizzleProvider } from './DrizzleProvider';
+import { WriteDrizzleProvider } from './DrizzleProvider';
 import { events } from './schemas/index';
 
 /**
@@ -13,7 +13,7 @@ import { events } from './schemas/index';
  */
 @injectable()
 export class DrizzleEventStore implements IEventStore {
-  constructor(@inject('DrizzleProvider') private readonly provider: DrizzleProvider) {}
+  constructor(@inject('WriteDrizzleProvider') private readonly provider: WriteDrizzleProvider) {}
 
   async loadStream(streamId: string): Promise<EventStream<StoredEvent>> {
     const rows = await this.provider.db
