@@ -1,9 +1,13 @@
 import { PGlite } from '@electric-sql/pglite';
 import { drizzle, PgliteDatabase } from 'drizzle-orm/pglite';
+import { migrate } from 'drizzle-orm/pglite/migrator';
 import { injectable } from 'tsyringe';
-import * as schema from './schemas';
+import path from 'path';
+import * as schema from './schemas/index';
 
 export type DrizzleDb = PgliteDatabase<typeof schema>;
+
+const migrationsFolder = path.join(import.meta.dirname, '..', 'drizzle');
 
 /**
  * Proveedor de Drizzle sobre PGlite.
@@ -11,9 +15,8 @@ export type DrizzleDb = PgliteDatabase<typeof schema>;
  * - Sin dataDir: base de datos en memoria (ideal para tests).
  * - Con dataDir: persiste en disco (desarrollo local).
  *
- * Crea las tablas con push directo del schema Drizzle.
- * Cuando se migre a PostgreSQL, se reemplaza PGlite por node-postgres
- * y se usa drizzle-kit migrate en vez de push.
+ * Aplica migraciones generadas por drizzle-kit (npm run db:generate).
+ * Los schemas en src/schemas/ son la fuente de verdad.
  */
 @injectable()
 export class DrizzleProvider {
@@ -28,7 +31,7 @@ export class DrizzleProvider {
   async initialize(dataDir?: string): Promise<void> {
     this.client = new PGlite(dataDir);
     this._db = drizzle(this.client, { schema });
-    await this.pushSchema();
+    await migrate(this._db, { migrationsFolder });
   }
 
   async close(): Promise<void> {
@@ -37,38 +40,5 @@ export class DrizzleProvider {
       this.client = null;
       this._db = null;
     }
-  }
-
-  /** Crea tablas directamente desde el schema Drizzle (desarrollo/tests). */
-  private async pushSchema(): Promise<void> {
-    if (!this.client) return;
-
-    await this.client.query(`
-      CREATE TABLE IF NOT EXISTS events (
-        global_position BIGSERIAL PRIMARY KEY,
-        stream_id       TEXT    NOT NULL,
-        stream_version  INTEGER NOT NULL,
-        event_type      TEXT    NOT NULL,
-        data            JSONB   NOT NULL,
-        metadata        JSONB   NOT NULL,
-        occurred_on     TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-        UNIQUE (stream_id, stream_version)
-      );
-      CREATE INDEX IF NOT EXISTS idx_events_stream_id ON events (stream_id, stream_version);
-      CREATE INDEX IF NOT EXISTS idx_events_event_type ON events (event_type);
-
-      CREATE TABLE IF NOT EXISTS snapshots (
-        aggregate_id TEXT    PRIMARY KEY,
-        version      INTEGER NOT NULL,
-        state        JSONB   NOT NULL,
-        created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
-      );
-
-      CREATE TABLE IF NOT EXISTS projection_checkpoints (
-        projection_name TEXT   PRIMARY KEY,
-        last_position   BIGINT NOT NULL DEFAULT 0,
-        updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
-      );
-    `);
   }
 }

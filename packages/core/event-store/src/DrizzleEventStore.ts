@@ -3,7 +3,7 @@ import { eq, gt, asc } from 'drizzle-orm';
 import type { IEventStore, StoredEvent, EventStream, DomainEvent, StreamVersion } from '@bank/shared';
 import { ConcurrencyError } from '@bank/shared';
 import { DrizzleProvider } from './DrizzleProvider';
-import { events } from './schemas';
+import { events } from './schemas/index';
 
 /**
  * Implementacion de IEventStore con Drizzle + PGlite.

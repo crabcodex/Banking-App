@@ -1,6 +1,7 @@
 {
   "name": "banking-app",
   "private": true,
+  "packageManager": "npm@10.2.4",
   "workspaces": [
     "packages/core/*",
     "packages/contexts/*",
@@ -14,6 +15,7 @@
     "typecheck": "turbo typecheck",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "generate-keys": "tsx scripts/generate-keys.ts",
     "db:generate": "drizzle-kit generate --config=packages/core/event-store/drizzle.config.ts",
     "db:migrate": "drizzle-kit migrate --config=packages/core/event-store/drizzle.config.ts"
   },
