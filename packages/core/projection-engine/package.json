@@ -1,19 +1,17 @@
 {
-  "name": "@bank/api",
+  "name": "@bank/projection-engine",
   "version": "0.0.1",
   "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "dev": "tsx watch src/server.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
-    "@bank/shared": "workspace:*",
-    "@bank/event-store": "workspace:*",
-    "@bank/projection-engine": "workspace:*"
+    "@bank/shared": "*",
+    "@bank/event-store": "*"
   }
 }

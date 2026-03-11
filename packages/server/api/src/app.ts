@@ -21,7 +21,7 @@ export function createApp(): express.Application {
   // -- Rutas --
   app.use('/api', healthRoutes());
 
-  // -- Error handler (debe ir al final) --
+  // -- Error handler --
   app.use(errorHandler);
 
   return app;

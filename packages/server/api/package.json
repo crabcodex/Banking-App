@@ -1,0 +1,19 @@
+{
+  "name": "@bank/api",
+  "version": "0.0.1",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/server.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@bank/shared": "*",
+    "@bank/event-store": "*",
+    "@bank/projection-engine": "*"
+  }
+}
