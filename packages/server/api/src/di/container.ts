@@ -9,14 +9,19 @@ import type { EnvConfig } from '../config/env';
  * Se invoca una sola vez al iniciar la aplicacion.
  */
 export async function setupContainer(config: EnvConfig): Promise<void> {
-  // Write DB — Event Store (events + snapshots)
-  const writeProvider = new WriteDrizzleProvider();
-  await writeProvider.initialize(config.PGLITE_WRITE_DIR);
-  container.register('WriteDrizzleProvider', { useValue: writeProvider });
+  const start = performance.now();
 
-  // Read DB — Proyecciones (read models + checkpoints)
+  // Inicializar ambas DBs en paralelo
+  const writeProvider = new WriteDrizzleProvider();
   const readProvider = new ReadDrizzleProvider();
-  await readProvider.initialize(config.PGLITE_READ_DIR);
+  await Promise.all([
+    writeProvider.initialize(config.PGLITE_WRITE_DIR),
+    readProvider.initialize(config.PGLITE_READ_DIR),
+  ]);
+
+  console.log(`DBs inicializadas en ${(performance.now() - start).toFixed(0)}ms`);
+
+  container.register('WriteDrizzleProvider', { useValue: writeProvider });
   container.register('ReadDrizzleProvider', { useValue: readProvider });
 
   // Event Store

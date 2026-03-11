@@ -7,11 +7,6 @@
     },
     "dev": {
       "cache": false,
-      "persistent": true,
-      "dependsOn": ["^dev"]
-    },
-    "@bank/api#dev": {
-      "cache": false,
       "persistent": true
     },
     "test": {

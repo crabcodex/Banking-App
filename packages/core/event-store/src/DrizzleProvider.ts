@@ -2,6 +2,7 @@ import { PGlite } from '@electric-sql/pglite';
 import { drizzle, PgliteDatabase } from 'drizzle-orm/pglite';
 import { migrate } from 'drizzle-orm/pglite/migrator';
 import { injectable } from 'tsyringe';
+import { mkdirSync } from 'fs';
 import path from 'path';
 import * as schema from './schemas/index';
 
@@ -30,6 +31,7 @@ export class WriteDrizzleProvider {
   }
 
   async initialize(dataDir?: string): Promise<void> {
+    if (dataDir) mkdirSync(dataDir, { recursive: true });
     this.client = new PGlite(dataDir);
     this._db = drizzle(this.client, { schema });
     await migrate(this._db, { migrationsFolder });
