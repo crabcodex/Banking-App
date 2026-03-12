@@ -1,0 +1,19 @@
+{
+  "name": "@bank/web",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wait-on http://localhost:3000/api/health && vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@bank/api": "workspace:*"
+  }
+}
