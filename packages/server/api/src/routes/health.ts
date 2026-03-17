@@ -3,6 +3,9 @@ import { Router, Request, Response } from 'express';
 /**
  * Rutas de salud. Usadas por health checks y verificacion basica.
  */
+
+
+
 export function healthRoutes(): Router {
   const router = Router();
 
