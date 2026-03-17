@@ -2,8 +2,11 @@
   "name": "@bank/identity",
   "version": "0.0.1",
   "private": true,
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "types": "./src/index.ts",
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
@@ -12,6 +15,7 @@
   },
   "dependencies": {
     "@bank/shared": "workspace:*",
-    "@bank/event-store": "workspace:*"
+    "@bank/event-store": "workspace:*",
+    "@bank/projection-engine": "workspace:*"
   }
 }

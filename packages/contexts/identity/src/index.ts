@@ -45,3 +45,10 @@
  *         ├── CustomerProjection.ts
  *         └── SessionProjection.ts
  */
+
+
+// commands
+export * from "./application/commands/RegisterCustomerCommand";
+export * from "./application/commands/RegisterCustomerHandler";
+
+export * from './infrastructure/auth/Argon2Service'
