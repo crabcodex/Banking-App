@@ -15,5 +15,10 @@
   "dependencies": {},
   "devDependencies": {
     "@bank/api": "workspace:*"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
