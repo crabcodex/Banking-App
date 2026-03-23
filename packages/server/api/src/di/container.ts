@@ -1,8 +1,11 @@
 import 'reflect-metadata';
 import { container } from 'tsyringe';
+import pino from 'pino';
 import { WriteDrizzleProvider, DrizzleEventStore, DrizzleSnapshotStore, InMemoryEventBus } from '@bank/event-store';
 import { ReadDrizzleProvider, ProjectionRunner, DrizzleProjectionCheckpoint } from '@bank/projection-engine';
 import { registerAccountsContext } from '@bank/accounts';
+import { CommandBus } from '../infrastructure/CommandBus';
+import { LoggingMiddleware } from '../infrastructure/middleware/LoggingMiddleware';
 import type { EnvConfig } from '../config/env';
 
 /**
@@ -40,4 +43,11 @@ export async function setupContainer(config: EnvConfig): Promise<void> {
 
   // -- Bounded Contexts --
   await registerAccountsContext();
+
+  // -- CommandBus con pipeline de middlewares --
+  const logger = pino({ level: config.NODE_ENV === 'test' ? 'silent' : 'info' });
+  const commandBus = new CommandBus(container);
+  commandBus.use(new LoggingMiddleware(logger));
+  commandBus.register('OpenAccount', 'OpenAccountHandler');
+  container.register('ICommandBus', { useValue: commandBus });
 }

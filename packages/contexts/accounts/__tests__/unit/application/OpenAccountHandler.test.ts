@@ -9,13 +9,14 @@ import { Money } from '../../../src/domain/value-objects/Money';
 import { DailyLimit } from '../../../src/domain/value-objects/DailyLimit';
 import type { AccountFactory } from '../../../src/domain/AccountFactory';
 import type { IAccountRepository } from '../../../src/domain/repositories/IAccountRepository';
-import type { EventMetadata } from '@bank/shared';
+import type { CommandMetadata } from '@bank/shared';
 
-const metadata: EventMetadata = {
+const metadata: CommandMetadata = {
   correlationId: 'c-1',
   causationId: 'cs-1',
   userId: 'u-1',
   channel: 'web',
+  timestamp: new Date(),
 };
 
 function fakeAccount(): Account {
@@ -40,6 +41,8 @@ describe('OpenAccountHandler', () => {
 
     const handler = new OpenAccountHandler(factory, repository);
     const result = await handler.execute({
+      commandName: 'OpenAccount',
+      commandId: 'cmd-1',
       customerId: 'cust-1',
       type: 'AHORRO',
       currency: 'MXN',
@@ -61,6 +64,7 @@ describe('OpenAccountHandler', () => {
 
     const handler = new OpenAccountHandler(factory, repository);
     await expect(handler.execute({
+      commandName: 'OpenAccount', commandId: 'cmd-2',
       customerId: 'x', type: 'AHORRO', currency: 'MXN', alias: 'A', initialBalance: 0, metadata,
     })).rejects.toThrow('spec failed');
 
@@ -77,6 +81,7 @@ describe('OpenAccountHandler', () => {
 
     const handler = new OpenAccountHandler(factory, repository);
     await expect(handler.execute({
+      commandName: 'OpenAccount', commandId: 'cmd-3',
       customerId: 'cust-1', type: 'AHORRO', currency: 'MXN', alias: 'Test', initialBalance: 500, metadata,
     })).rejects.toThrow('db error');
   });

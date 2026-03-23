@@ -1,13 +1,13 @@
-import type { EventMetadata } from '@bank/shared';
+import type { ICommand } from '@bank/shared';
 
-/** DTO del comando. Solo primitivos — sin VOs, sin lógica. */
-export interface OpenAccountCommand {
+/** Comando para abrir una nueva cuenta bancaria. */
+export interface OpenAccountCommand extends ICommand {
+  readonly commandName: 'OpenAccount';
   readonly customerId: string;
   readonly type: string;
   readonly currency: string;
   readonly alias: string;
   readonly initialBalance: number;
-  readonly metadata: EventMetadata;
 }
 
 export interface OpenAccountResult {

@@ -11,14 +11,15 @@ import { AccountListProjection } from '../../src/infrastructure/projections/Acco
 import { migrateAccountsReadModel } from '../../src/infrastructure/initializeReadModel';
 import { accountsReadModel } from '../../src/infrastructure/schemas/accountsReadModel';
 import { InvalidAccountTypeError, InsufficientOpeningBalanceError } from '../../src/domain/errors';
-import type { EventMetadata } from '@bank/shared';
+import type { CommandMetadata } from '@bank/shared';
 import type { OpenAccountCommand } from '../../src/application/commands/OpenAccountCommand';
 
-const meta: EventMetadata = {
+const meta: CommandMetadata = {
   correlationId: 'corr-int-1',
   causationId: 'cause-int-1',
   userId: 'user-int-1',
   channel: 'web',
+  timestamp: new Date(),
 };
 
 describe('OpenAccount — Flujo de integración', () => {
@@ -57,6 +58,8 @@ describe('OpenAccount — Flujo de integración', () => {
 
   it('debe abrir una cuenta y persistir eventos en el Event Store', async () => {
     const command: OpenAccountCommand = {
+      commandName: 'OpenAccount',
+      commandId: 'cmd-int-1',
       customerId: 'cust-1',
       type: 'AHORRO',
       currency: 'MXN',
@@ -89,6 +92,8 @@ describe('OpenAccount — Flujo de integración', () => {
 
   it('debe rechazar tipo de cuenta inválido', async () => {
     const command: OpenAccountCommand = {
+      commandName: 'OpenAccount',
+      commandId: 'cmd-int-2',
       customerId: 'cust-1',
       type: 'CRIPTO',
       currency: 'MXN',
@@ -102,6 +107,8 @@ describe('OpenAccount — Flujo de integración', () => {
 
   it('debe rechazar saldo insuficiente para CHEQUES', async () => {
     const command: OpenAccountCommand = {
+      commandName: 'OpenAccount',
+      commandId: 'cmd-int-3',
       customerId: 'cust-1',
       type: 'CHEQUES',
       currency: 'MXN',
@@ -115,6 +122,8 @@ describe('OpenAccount — Flujo de integración', () => {
 
   it('debe proyectar AccountOpened al read model', async () => {
     const command: OpenAccountCommand = {
+      commandName: 'OpenAccount',
+      commandId: 'cmd-int-4',
       customerId: 'cust-1',
       type: 'AHORRO',
       currency: 'MXN',
