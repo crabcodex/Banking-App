@@ -1,4 +1,5 @@
 export { createApp } from './app';
+export type { AppConfig } from './app';
 export { loadEnvConfig } from './config/env';
 export type { EnvConfig } from './config/env';
 export { setupContainer } from './di/container';
@@ -9,3 +10,8 @@ export type { ApiErrorDetail } from './shared/ApiResponse';
 export { AccountController } from './controllers/AccountController';
 export { accountRoutes } from './routes/accounts';
 export { validateBody } from './middleware/validateBody';
+export { securityHeaders } from './middleware/securityHeaders';
+export { createRateLimiter, sensitiveRateLimiter } from './middleware/rateLimiter';
+export { requireAuth, requireRole } from './middleware/auth';
+export type { AuthPayload } from './middleware/auth';
+export { idempotency } from './middleware/idempotency';

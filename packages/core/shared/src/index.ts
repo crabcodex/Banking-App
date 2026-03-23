@@ -21,6 +21,7 @@ export type { ICommandMiddleware, NextMiddleware } from './application/ICommandM
 export type { ICommandHandler } from './application/ICommandHandler';
 export type { IQueryHandler } from './application/IQueryHandler';
 export type { IEventHandler } from './application/IEventHandler';
+export type { ITokenVerifier, TokenPayload } from './application/ITokenVerifier';
 
 // -- Infraestructura (contratos) --
 export type { IEventStore } from './infrastructure/event-store/IEventStore';

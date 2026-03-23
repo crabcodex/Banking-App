@@ -7,6 +7,7 @@ import { registerAccountsContext } from '@bank/accounts';
 import { RabbitMQConnection, OutboxRelay, migrateOutboxCheckpoint } from '@bank/messaging';
 import { CommandBus } from '../infrastructure/CommandBus';
 import { LoggingMiddleware } from '../infrastructure/middleware/LoggingMiddleware';
+import { JoseTokenVerifier } from '../infrastructure/JoseTokenVerifier';
 import type { EnvConfig } from '../config/env';
 
 /**
@@ -44,6 +45,12 @@ export async function setupContainer(config: EnvConfig): Promise<void> {
 
   // -- Bounded Contexts --
   await registerAccountsContext();
+
+  // -- Token Verifier --
+  // TODO(@bank/identity): Reemplazar JoseTokenVerifier por la implementación real
+  // del contexto de Identity cuando esté lista. Solo cambiar este binding.
+  const tokenVerifier = new JoseTokenVerifier(config.JWT_PUBLIC_KEY_PATH);
+  container.register('ITokenVerifier', { useValue: tokenVerifier });
 
   // -- CommandBus con pipeline de middlewares --
   const logger = pino({ level: config.NODE_ENV === 'test' ? 'silent' : 'info' });

@@ -24,6 +24,16 @@ const envSchema = z.object({
   // Projection polling
   PROJECTION_POLL_MS: z.coerce.number().default(1000),
 
+  // CORS
+  CORS_ORIGINS: z.string().default('*'),
+
+  // Rate Limit
+  RATE_LIMIT_WINDOW_MS: z.coerce.number().default(60_000),
+  RATE_LIMIT_MAX: z.coerce.number().default(100),
+
+  // Idempotency
+  IDEMPOTENCY_TTL_MS: z.coerce.number().default(86_400_000),
+
   // RabbitMQ (opcional — sin URL, no se conecta)
   AMQP_URL: z.string().url().optional(),
   OUTBOX_POLL_MS: z.coerce.number().default(1000),
