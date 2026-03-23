@@ -4,6 +4,7 @@ import { requestIdMiddleware } from './middleware/requestId';
 import { requestLogger } from './middleware/requestLogger';
 import { errorHandler } from './middleware/errorHandler';
 import { healthRoutes } from './routes/health';
+import { accountRoutes } from './routes/accounts';
 
 /**
  * Fabrica de la aplicacion Express.
@@ -20,6 +21,7 @@ export function createApp(): express.Application {
 
   // -- Rutas --
   app.use('/api', healthRoutes());
+  app.use('/api', accountRoutes());
 
   // -- Error handler --
   app.use(errorHandler);

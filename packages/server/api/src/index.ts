@@ -4,3 +4,8 @@ export type { EnvConfig } from './config/env';
 export { setupContainer } from './di/container';
 export { CommandBus } from './infrastructure/CommandBus';
 export { LoggingMiddleware } from './infrastructure/middleware/LoggingMiddleware';
+export { ApiResponse } from './shared/ApiResponse';
+export type { ApiErrorDetail } from './shared/ApiResponse';
+export { AccountController } from './controllers/AccountController';
+export { accountRoutes } from './routes/accounts';
+export { validateBody } from './middleware/validateBody';
