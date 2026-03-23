@@ -4,6 +4,7 @@ import pino from 'pino';
 import { WriteDrizzleProvider, DrizzleEventStore, DrizzleSnapshotStore, InMemoryEventBus } from '@bank/event-store';
 import { ReadDrizzleProvider, ProjectionRunner, DrizzleProjectionCheckpoint } from '@bank/projection-engine';
 import { registerAccountsContext } from '@bank/accounts';
+import { RabbitMQConnection, OutboxRelay, migrateOutboxCheckpoint } from '@bank/messaging';
 import { CommandBus } from '../infrastructure/CommandBus';
 import { LoggingMiddleware } from '../infrastructure/middleware/LoggingMiddleware';
 import type { EnvConfig } from '../config/env';
@@ -50,4 +51,26 @@ export async function setupContainer(config: EnvConfig): Promise<void> {
   commandBus.use(new LoggingMiddleware(logger));
   commandBus.register('OpenAccount', 'OpenAccountHandler');
   container.register('ICommandBus', { useValue: commandBus });
+
+  // -- RabbitMQ + Outbox Relay (solo si AMQP_URL está configurada) --
+  if (config.AMQP_URL) {
+    const rabbitConnection = new RabbitMQConnection({ url: config.AMQP_URL });
+    await rabbitConnection.connect();
+    container.register('RabbitMQConnection', { useValue: rabbitConnection });
+
+    // Migrar tabla outbox_checkpoint en la Write DB
+    await migrateOutboxCheckpoint(writeProvider);
+
+    const eventStore = container.resolve<DrizzleEventStore>('IEventStore');
+    const outboxRelay = new OutboxRelay(eventStore, rabbitConnection, writeProvider, {
+      pollIntervalMs: config.OUTBOX_POLL_MS,
+      batchSize: config.OUTBOX_BATCH_SIZE,
+    });
+    await outboxRelay.start();
+    container.register('OutboxRelay', { useValue: outboxRelay });
+
+    console.log('RabbitMQ conectado + OutboxRelay iniciado');
+  } else {
+    console.log('AMQP_URL no configurada — OutboxRelay desactivado');
+  }
 }

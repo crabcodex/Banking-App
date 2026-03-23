@@ -23,6 +23,11 @@ const envSchema = z.object({
 
   // Projection polling
   PROJECTION_POLL_MS: z.coerce.number().default(1000),
+
+  // RabbitMQ (opcional — sin URL, no se conecta)
+  AMQP_URL: z.string().url().optional(),
+  OUTBOX_POLL_MS: z.coerce.number().default(1000),
+  OUTBOX_BATCH_SIZE: z.coerce.number().default(100),
 });
 
 export type EnvConfig = z.infer<typeof envSchema>;

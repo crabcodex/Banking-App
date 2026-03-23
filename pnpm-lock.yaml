@@ -17,6 +17,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.45.1
         version: 5.90.21(react@19.2.4)
+      amqplib:
+        specifier: ^0.10.0
+        version: 0.10.9
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -93,6 +96,9 @@ importers:
       '@testing-library/react':
         specifier: ^16.0.0
         version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      '@types/amqplib':
+        specifier: ^0.10.0
+        version: 0.10.8
       '@types/cors':
         specifier: ^2.8.17
         version: 2.8.19
@@ -223,6 +229,15 @@ importers:
         specifier: workspace:*
         version: link:../shared
 
+  packages/core/messaging:
+    dependencies:
+      '@bank/event-store':
+        specifier: workspace:*
+        version: link:../event-store
+      '@bank/shared':
+        specifier: workspace:*
+        version: link:../shared
+
   packages/core/projection-engine:
     dependencies:
       '@bank/shared':
@@ -239,6 +254,9 @@ importers:
       '@bank/event-store':
         specifier: workspace:*
         version: link:../../core/event-store
+      '@bank/messaging':
+        specifier: workspace:*
+        version: link:../../core/messaging
       '@bank/projection-engine':
         specifier: workspace:*
         version: link:../../core/projection-engine
@@ -1425,6 +1443,9 @@ packages:
   '@tybys/wasm-util@0.10.1':
     resolution: {integrity: sha512-9tTaPJLSiejZKx+Bmog4uSubteqTvFrVrURwkmHixBo0G4seD0zUxp98E1DzUBJxLQ3NPwXrGKDiVjwx/DpPsg==}
 
+  '@types/amqplib@0.10.8':
+    resolution: {integrity: sha512-vtDp8Pk1wsE/AuQ8/Rgtm6KUZYqcnTgNvEHwzCkX8rL7AGsC6zqAfKAAJhUZXFhM/Pp++tbnUHiam/8vVpPztA==}
+
   '@types/aria-query@5.0.4':
     resolution: {integrity: sha512-rfT93uj5s0PRL7EzccGMs3brplhcrghnDoV26NqKhCAS1hVo+WdNsPvE/yb6ilfr5hi2MEk6d5EWJTKdxg8jVw==}
 
@@ -1584,6 +1605,10 @@ packages:
   ajv@6.14.0:
     resolution: {integrity: sha512-IWrosm/yrn43eiKqkfkHis7QioDleaXQHdDVPKg0FSwwd/DuvyX79TZnFOnYpB7dcsFAMmtFztZuXPDvSePkFw==}
 
+  amqplib@0.10.9:
+    resolution: {integrity: sha512-jwSftI4QjS3mizvnSnOrPGYiUnm1vI2OP1iXeOUz5pb74Ua0nbf6nPyyTzuiCLEE3fMpaJORXh2K/TQ08H5xGA==}
+    engines: {node: '>=10'}
+
   ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
     engines: {node: '>=8'}
@@ -1648,6 +1673,9 @@ packages:
 
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
+
+  buffer-more-ints@1.0.0:
+    resolution: {integrity: sha512-EMetuGFz5SLsT0QTnXzINh4Ksr+oo4i+UGTXEshiGCQWnsgSs7ZhJ8fzlwQ+OzEMs0MpDAMr1hxnblp5a4vcHg==}
 
   bytes@3.1.2:
     resolution: {integrity: sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==}
@@ -2579,6 +2607,9 @@ packages:
     resolution: {integrity: sha512-V/yCWTTF7VJ9hIh18Ugr2zhJMP01MY7c5kh4J870L7imm6/DIzBsNLTXzMwUA3yZ5b/KBqLx8Kp3uRvd7xSe3Q==}
     engines: {node: '>=0.6'}
 
+  querystringify@2.2.0:
+    resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
+
   quick-format-unescaped@4.0.4:
     resolution: {integrity: sha512-tYC1Q1hgyRuHgloV/YXs2w15unPVh8qfu/qCTfhTYamaw7fyhumKa2yGpdSo87vY32rIclj+4fWYQXUMs9EHvg==}
 
@@ -2674,6 +2705,9 @@ packages:
   require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
     engines: {node: '>=0.10.0'}
+
+  requires-port@1.0.0:
+    resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
 
   reselect@5.1.1:
     resolution: {integrity: sha512-K/BG6eIky/SBpzfHZv/dd+9JBFiS4SWV7FIujVyJRux6e45+73RaUHXLmIR1f7WOMaQ0U1km6qwklRQxpJJY0w==}
@@ -2950,6 +2984,9 @@ packages:
 
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
+
+  url-parse@1.5.10:
+    resolution: {integrity: sha512-WypcfiRhfeUP9vvF0j6rw0J3hrWrw6iZv3+22h6iRMJ/8z1Tj6XfLP4DsUix5MhMPnXpiHDoKyoZ/bdCkwBCiQ==}
 
   use-sync-external-store@1.6.0:
     resolution: {integrity: sha512-Pp6GSwGP/NrPIrxVFAIkOQeyw8lFenOHijQWkUTrDvrF4ALqylP2C/KCkeS9dpUM3KvYRQhna5vt7IL95+ZQ9w==}
@@ -3992,6 +4029,10 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
+  '@types/amqplib@0.10.8':
+    dependencies:
+      '@types/node': 25.4.0
+
   '@types/aria-query@5.0.4': {}
 
   '@types/babel__core@7.20.5':
@@ -4182,6 +4223,11 @@ snapshots:
       json-schema-traverse: 0.4.1
       uri-js: 4.4.1
 
+  amqplib@0.10.9:
+    dependencies:
+      buffer-more-ints: 1.0.0
+      url-parse: 1.5.10
+
   ansi-regex@5.0.1: {}
 
   ansi-styles@4.3.0:
@@ -4250,6 +4296,8 @@ snapshots:
       update-browserslist-db: 1.2.3(browserslist@4.28.1)
 
   buffer-from@1.1.2: {}
+
+  buffer-more-ints@1.0.0: {}
 
   bytes@3.1.2: {}
 
@@ -5127,6 +5175,8 @@ snapshots:
     dependencies:
       side-channel: 1.1.0
 
+  querystringify@2.2.0: {}
+
   quick-format-unescaped@4.0.4: {}
 
   range-parser@1.2.1: {}
@@ -5214,6 +5264,8 @@ snapshots:
   reflect-metadata@0.2.2: {}
 
   require-directory@2.1.1: {}
+
+  requires-port@1.0.0: {}
 
   reselect@5.1.1: {}
 
@@ -5512,6 +5564,11 @@ snapshots:
   uri-js@4.4.1:
     dependencies:
       punycode: 2.3.1
+
+  url-parse@1.5.10:
+    dependencies:
+      querystringify: 2.2.0
+      requires-port: 1.0.0
 
   use-sync-external-store@1.6.0(react@19.2.4):
     dependencies:

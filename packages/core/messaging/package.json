@@ -1,5 +1,5 @@
 {
-  "name": "@bank/api",
+  "name": "@bank/messaging",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -7,16 +7,12 @@
   "types": "src/index.ts",
   "scripts": {
     "build": "tsc",
-    "dev": "node --env-file=.env --import @swc-node/register/esm-register --watch-path=src src/server.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
     "@bank/shared": "workspace:*",
-    "@bank/event-store": "workspace:*",
-    "@bank/projection-engine": "workspace:*",
-    "@bank/accounts": "workspace:*",
-    "@bank/messaging": "workspace:*"
+    "@bank/event-store": "workspace:*"
   }
 }
