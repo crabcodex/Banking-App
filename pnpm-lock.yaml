@@ -162,6 +162,9 @@ importers:
       '@bank/event-store':
         specifier: workspace:*
         version: link:../../core/event-store
+      '@bank/projection-engine':
+        specifier: workspace:*
+        version: link:../../core/projection-engine
       '@bank/shared':
         specifier: workspace:*
         version: link:../../core/shared
@@ -230,6 +233,9 @@ importers:
 
   packages/server/api:
     dependencies:
+      '@bank/accounts':
+        specifier: workspace:*
+        version: link:../../contexts/accounts
       '@bank/event-store':
         specifier: workspace:*
         version: link:../../core/event-store

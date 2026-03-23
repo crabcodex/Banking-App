@@ -13,13 +13,20 @@
     "dev": "turbo dev",
     "build": "turbo build",
     "test": "turbo test",
+    "test:unit": "vitest run --reporter verbose packages/**/unit/**",
+    "test:integration": "vitest run --reporter verbose packages/**/integration/**",
+    "test:shared": "turbo test --filter=@bank/shared",
+    "test:event-store": "turbo test --filter=@bank/event-store",
+    "test:accounts": "turbo test --filter=@bank/accounts",
+    "test:api": "turbo test --filter=@bank/api",
     "typecheck": "turbo typecheck",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
     "generate-keys": "node --import tsx scripts/generate-keys.ts",
     "db:generate:write": "drizzle-kit generate --config=packages/core/event-store/drizzle.config.ts",
     "db:generate:read": "drizzle-kit generate --config=packages/core/projection-engine/drizzle.config.ts",
-    "db:generate": "pnpm run db:generate:write && pnpm run db:generate:read"
+    "db:generate:accounts": "drizzle-kit generate --config=packages/contexts/accounts/drizzle.config.ts",
+    "db:generate": "pnpm run db:generate:write && pnpm run db:generate:read && pnpm run db:generate:accounts"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.3.0",

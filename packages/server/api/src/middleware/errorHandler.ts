@@ -1,42 +1,32 @@
 import { Request, Response, NextFunction } from 'express';
 import { DomainError, ValidationError } from '@bank/shared';
+import { ApiResponse } from '../shared/ApiResponse';
 
 /**
  * Middleware global de errores.
- * Mapea DomainError -> HTTP status code. Errores desconocidos -> 500.
+ * Mapea DomainError -> HTTP status code usando ApiResponse estandarizado.
  */
 export function errorHandler(err: Error, req: Request, res: Response, _next: NextFunction): void {
   const requestId = req.headers['x-request-id'] as string;
 
   if (err instanceof ValidationError) {
-    res.status(err.httpStatus).json({
-      success: false,
-      message: err.message,
-      data: null,
-      errors: err.errors,
-      requestId,
-    });
+    const errors = err.errors.map(e => ({ code: 'VALIDATION_ERROR', message: `${e.field}: ${e.message}` }));
+    const response = ApiResponse.fail(err.message, errors).withRequestId(requestId);
+    res.status(err.httpStatus).json(response);
     return;
   }
 
   if (err instanceof DomainError) {
-    res.status(err.httpStatus).json({
-      success: false,
-      message: err.message,
-      data: null,
-      errors: [{ code: err.code, message: err.message }],
-      requestId,
-    });
+    const response = ApiResponse.fail(err.message, [{ code: err.code, message: err.message }]).withRequestId(requestId);
+    res.status(err.httpStatus).json(response);
     return;
   }
 
   // Error no controlado
   console.error('Error no controlado:', err);
-  res.status(500).json({
-    success: false,
-    message: 'Error interno del servidor',
-    data: null,
-    errors: [{ code: 'INTERNAL_ERROR', message: 'Error interno del servidor' }],
-    requestId,
-  });
+  const response = ApiResponse.fail(
+    'Error interno del servidor',
+    [{ code: 'INTERNAL_ERROR', message: 'Error interno del servidor' }],
+  ).withRequestId(requestId);
+  res.status(500).json(response);
 }

@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { WriteDrizzleProvider, DrizzleEventStore, DrizzleSnapshotStore, InMemoryEventBus } from '@bank/event-store';
 import { ReadDrizzleProvider, ProjectionRunner, DrizzleProjectionCheckpoint } from '@bank/projection-engine';
+import { registerAccountsContext } from '@bank/accounts';
 import type { EnvConfig } from '../config/env';
 
 /**
@@ -36,4 +37,7 @@ export async function setupContainer(config: EnvConfig): Promise<void> {
   // Projection Engine
   container.register(DrizzleProjectionCheckpoint, { useClass: DrizzleProjectionCheckpoint });
   container.register(ProjectionRunner, { useClass: ProjectionRunner });
+
+  // -- Bounded Contexts --
+  await registerAccountsContext();
 }
