@@ -12,8 +12,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test"
   },
-  "dependencies": {},
   "devDependencies": {
-    "@bank/api": "workspace:*"
+    "@bank/api": "workspace:*",
+    "jsdom": "^29.0.1"
   }
 }
