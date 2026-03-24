@@ -13,5 +13,4 @@ export { validateBody } from './middleware/validateBody';
 export { securityHeaders } from './middleware/securityHeaders';
 export { createRateLimiter, sensitiveRateLimiter } from './middleware/rateLimiter';
 export { requireAuth, requireRole } from './middleware/auth';
-export type { AuthPayload } from './middleware/auth';
 export { idempotency } from './middleware/idempotency';
