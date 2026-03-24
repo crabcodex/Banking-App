@@ -8,9 +8,9 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.coerce.number().default(3000),
 
-  // PGlite
-  PGLITE_WRITE_DIR: z.string().optional(),
-  PGLITE_READ_DIR: z.string().optional(),
+  // PostgreSQL (Supabase)
+  DATABASE_WRITE_URL: z.string(),
+  DATABASE_READ_URL: z.string(),
 
   // JWT
   JWT_PRIVATE_KEY_PATH: z.string().default('./keys/private.pem'),

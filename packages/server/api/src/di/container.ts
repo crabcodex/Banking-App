@@ -4,7 +4,7 @@ import pino from 'pino';
 import { WriteDrizzleProvider, DrizzleEventStore, DrizzleSnapshotStore, InMemoryEventBus } from '@bank/event-store';
 import { ReadDrizzleProvider, ProjectionRunner, DrizzleProjectionCheckpoint } from '@bank/projection-engine';
 import { registerAccountsContext } from '@bank/accounts';
-import { RabbitMQConnection, OutboxRelay, migrateOutboxCheckpoint } from '@bank/messaging';
+import { RabbitMQConnection, OutboxRelay } from '@bank/messaging';
 import { CommandBus } from '../infrastructure/CommandBus';
 import { LoggingMiddleware } from '../infrastructure/middleware/LoggingMiddleware';
 import { JoseTokenVerifier } from '../infrastructure/JoseTokenVerifier';
@@ -21,8 +21,8 @@ export async function setupContainer(config: EnvConfig): Promise<void> {
   const writeProvider = new WriteDrizzleProvider();
   const readProvider = new ReadDrizzleProvider();
   await Promise.all([
-    writeProvider.initialize(config.PGLITE_WRITE_DIR),
-    readProvider.initialize(config.PGLITE_READ_DIR),
+    writeProvider.initialize(config.DATABASE_WRITE_URL),
+    readProvider.initialize(config.DATABASE_READ_URL),
   ]);
 
   console.log(`DBs inicializadas en ${(performance.now() - start).toFixed(0)}ms`);
@@ -64,9 +64,6 @@ export async function setupContainer(config: EnvConfig): Promise<void> {
     const rabbitConnection = new RabbitMQConnection({ url: config.AMQP_URL });
     await rabbitConnection.connect();
     container.register('RabbitMQConnection', { useValue: rabbitConnection });
-
-    // Migrar tabla outbox_checkpoint en la Write DB
-    await migrateOutboxCheckpoint(writeProvider);
 
     const eventStore = container.resolve<DrizzleEventStore>('IEventStore');
     const outboxRelay = new OutboxRelay(eventStore, rabbitConnection, writeProvider, {

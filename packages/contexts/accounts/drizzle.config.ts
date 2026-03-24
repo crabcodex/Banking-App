@@ -5,4 +5,7 @@ export default defineConfig({
   schema: './packages/contexts/accounts/src/infrastructure/schemas/accountsReadModel.ts',
   out: './packages/contexts/accounts/drizzle',
   dialect: 'postgresql',
+  dbCredentials: {
+    url: process.env.DATABASE_READ_URL!,
+  },
 });

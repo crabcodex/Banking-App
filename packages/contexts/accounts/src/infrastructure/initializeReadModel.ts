@@ -1,4 +1,3 @@
-import { migrate } from 'drizzle-orm/pglite/migrator';
 import type { ReadDrizzleProvider } from '@bank/projection-engine';
 import path from 'path';
 
@@ -10,5 +9,5 @@ const migrationsFolder = path.join(import.meta.dirname, '..', '..', 'drizzle');
  * Se invoca durante el registro del bounded context (composición).
  */
 export async function migrateAccountsReadModel(readProvider: ReadDrizzleProvider): Promise<void> {
-  await migrate(readProvider.db, { migrationsFolder });
+  await readProvider.runMigrations(migrationsFolder);
 }

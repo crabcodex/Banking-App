@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { container } from 'tsyringe';
 import type { ITokenVerifier } from '@bank/shared';
 import { createApp } from './app';

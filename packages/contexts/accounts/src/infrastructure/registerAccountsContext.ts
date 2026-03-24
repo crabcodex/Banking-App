@@ -1,5 +1,4 @@
 import { container } from 'tsyringe';
-import type { ReadDrizzleProvider } from '@bank/projection-engine';
 import { ProjectionRunner } from '@bank/projection-engine';
 import { EventStoreAccountRepository } from './EventStoreAccountRepository';
 import { RandomCLABEGenerator } from './RandomCLABEGenerator';
@@ -8,18 +7,15 @@ import { ReadModelMaxAccountsSpec } from './ReadModelMaxAccountsSpec';
 import { AccountListProjection } from './projections/AccountListProjection';
 import { AccountFactory } from '../domain/AccountFactory';
 import { OpenAccountHandler } from '../application/commands/OpenAccountHandler';
-import { migrateAccountsReadModel } from './initializeReadModel';
 
 /**
  * Registra todos los bindings del bounded context Accounts en el contenedor DI.
  * Se invoca desde setupContainer() en @bank/api.
+ *
+ * Las migraciones del read model se aplican explícitamente con `pnpm db:migrate`.
  */
 export async function registerAccountsContext(): Promise<void> {
-  // 1. Aplicar migraciones del read model
-  const readProvider = container.resolve<ReadDrizzleProvider>('ReadDrizzleProvider');
-  await migrateAccountsReadModel(readProvider);
-
-  // 2. Adapters de infraestructura
+  // 1. Adapters de infraestructura
   container.register('IAccountRepository', { useClass: EventStoreAccountRepository });
   container.register('ICLABEGenerator', { useClass: RandomCLABEGenerator });
   container.register('ICustomerActiveSpec', { useClass: StubCustomerActiveSpec });

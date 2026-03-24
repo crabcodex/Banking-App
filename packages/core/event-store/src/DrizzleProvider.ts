@@ -1,28 +1,25 @@
-import { PGlite } from '@electric-sql/pglite';
-import { drizzle, PgliteDatabase } from 'drizzle-orm/pglite';
-import { migrate } from 'drizzle-orm/pglite/migrator';
+import postgres, { type Sql } from 'postgres';
+import { drizzle as pgDrizzle, type PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { injectable } from 'tsyringe';
-import { mkdirSync } from 'fs';
-import path from 'path';
 import * as schema from './schemas/index';
 
-export type WriteDb = PgliteDatabase<typeof schema>;
-
-const migrationsFolder = path.join(import.meta.dirname, '..', 'drizzle');
+export type WriteDb = PostgresJsDatabase<typeof schema>;
 
 /**
- * Proveedor de Drizzle sobre PGlite para la base de datos de ESCRITURA.
+ * Proveedor de Drizzle para la base de datos de ESCRITURA.
  *
  * Gestiona el Event Store (events + snapshots).
  *
- * - Sin dataDir: base de datos en memoria (ideal para tests).
- * - Con dataDir: persiste en disco (desarrollo local).
+ * - Con connectionUrl: PostgreSQL real (Neon / producción).
+ * - Sin connectionUrl: PGlite en memoria (tests).
  *
- * Aplica migraciones generadas por drizzle-kit (npm run db:generate:write).
+ * Las migraciones se aplican explícitamente con `pnpm db:migrate`.
  */
 @injectable()
 export class WriteDrizzleProvider {
-  private client: PGlite | null = null;
+  private sql: Sql | null = null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- PGlite solo se importa dinámicamente en tests
+  private pgliteClient: any = null;
   private _db: WriteDb | null = null;
 
   get db(): WriteDb {
@@ -30,18 +27,41 @@ export class WriteDrizzleProvider {
     return this._db;
   }
 
-  async initialize(dataDir?: string): Promise<void> {
-    if (dataDir) mkdirSync(dataDir, { recursive: true });
-    this.client = new PGlite(dataDir);
-    this._db = drizzle(this.client, { schema });
-    await migrate(this._db, { migrationsFolder });
+  async initialize(connectionUrl?: string): Promise<void> {
+    if (connectionUrl) {
+      this.sql = postgres(connectionUrl);
+      this._db = pgDrizzle(this.sql, { schema });
+    } else {
+      // PGlite en memoria para tests — aplica migraciones automáticamente
+      const { PGlite } = await import('@electric-sql/pglite');
+      const pgliteDrizzle = await import('drizzle-orm/pglite');
+      const pgliteMigrator = await import('drizzle-orm/pglite/migrator');
+      const path = await import('path');
+      const client = new PGlite();
+      this.pgliteClient = client;
+      this._db = pgliteDrizzle.drizzle(client, { schema }) as unknown as WriteDb;
+      const migrationsFolder = path.join(import.meta.dirname, '..', 'drizzle');
+      await pgliteMigrator.migrate(this._db as never, { migrationsFolder });
+    }
+  }
+
+  /** Aplica migraciones en PGlite (solo tests). No-op si es PostgreSQL real. */
+  async runMigrations(folder: string): Promise<void> {
+    if (!this._db) throw new Error('WriteDrizzleProvider no inicializado.');
+    if (this.sql) return; // PostgreSQL real — migraciones se aplican con db:migrate
+    const { migrate } = await import('drizzle-orm/pglite/migrator');
+    await migrate(this._db as never, { migrationsFolder: folder });
   }
 
   async close(): Promise<void> {
-    if (this.client) {
-      await this.client.close();
-      this.client = null;
-      this._db = null;
+    if (this.sql) {
+      await this.sql.end();
+      this.sql = null;
     }
+    if (this.pgliteClient) {
+      await this.pgliteClient.close();
+      this.pgliteClient = null;
+    }
+    this._db = null;
   }
 }
