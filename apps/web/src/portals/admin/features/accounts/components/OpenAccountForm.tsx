@@ -11,9 +11,10 @@ import {
 interface OpenAccountFormProps {
   onSubmit: (data: OpenAccountFormData) => void;
   defaultCustomerId?: string;
+  lockCustomerId?: boolean;
 }
 
-export function OpenAccountForm({ onSubmit, defaultCustomerId }: OpenAccountFormProps) {
+export function OpenAccountForm({ onSubmit, defaultCustomerId, lockCustomerId }: OpenAccountFormProps) {
   const {
     register,
     handleSubmit,
@@ -31,12 +32,16 @@ export function OpenAccountForm({ onSubmit, defaultCustomerId }: OpenAccountForm
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5" noValidate>
-      <Input
-        label="ID del Cliente"
-        placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-        error={errors.customerId?.message}
-        {...register('customerId')}
-      />
+      {lockCustomerId ? (
+        <input type="hidden" {...register('customerId')} />
+      ) : (
+        <Input
+          label="ID del Cliente"
+          placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+          error={errors.customerId?.message}
+          {...register('customerId')}
+        />
+      )}
 
       <Select
         label="Tipo de Cuenta"

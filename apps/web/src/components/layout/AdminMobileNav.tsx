@@ -1,30 +1,30 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Landmark, UserPlus, Bell, Menu } from 'lucide-react';
+import { LayoutDashboard, Users, Landmark, ArrowLeftRight, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-interface MobileNavItem {
+interface AdminMobileNavItem {
   to: string;
   label: string;
   icon: React.ComponentType<{ className?: string }>;
 }
 
-const items: MobileNavItem[] = [
-  { to: '/', label: 'Inicio', icon: LayoutDashboard },
-  { to: '/accounts', label: 'Cuentas', icon: Landmark },
-  { to: '/accounts/new', label: 'Abrir', icon: UserPlus },
-  { to: '/notifications', label: 'Alertas', icon: Bell },
-  { to: '/more', label: 'Más', icon: Menu },
+const items: AdminMobileNavItem[] = [
+  { to: '/admin', label: 'Inicio', icon: LayoutDashboard },
+  { to: '/admin/customers', label: 'Clientes', icon: Users },
+  { to: '/admin/accounts', label: 'Cuentas', icon: Landmark },
+  { to: '/admin/transfers', label: 'Transf.', icon: ArrowLeftRight },
+  { to: '/admin/more', label: 'Mas', icon: Menu },
 ];
 
-export function MobileNav() {
+export function AdminMobileNav() {
   const location = useLocation();
 
   return (
     <nav className="md:hidden flex items-center justify-around border-t border-border bg-surface h-14">
       {items.map((item) => {
         const isActive =
-          item.to === '/'
-            ? location.pathname === '/'
+          item.to === '/admin'
+            ? location.pathname === '/admin'
             : location.pathname.startsWith(item.to);
 
         return (

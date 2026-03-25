@@ -16,10 +16,10 @@ function renderPage() {
   return render(
     <QueryClientProvider client={queryClient}>
       <ToastProvider>
-        <MemoryRouter initialEntries={['/accounts/new']}>
+        <MemoryRouter initialEntries={['/admin/accounts/new']}>
           <Routes>
-            <Route path="/accounts/new" element={<OpenAccountPage />} />
-            <Route path="/" element={<div>Dashboard</div>} />
+            <Route path="/admin/accounts/new" element={<OpenAccountPage />} />
+            <Route path="/admin" element={<div>Dashboard</div>} />
           </Routes>
         </MemoryRouter>
       </ToastProvider>

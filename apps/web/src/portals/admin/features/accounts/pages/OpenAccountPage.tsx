@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useToast } from '@/components/ui';
 import { useOpenAccount } from '../hooks/useOpenAccount';
 import { OpenAccountForm } from '../components/OpenAccountForm';
@@ -11,6 +12,8 @@ import { ApiError } from '@/lib/httpClient';
 type Step = 'form' | 'confirm' | 'success';
 
 export function OpenAccountPage() {
+  const [searchParams] = useSearchParams();
+  const prefilledCustomerId = searchParams.get('customerId') ?? undefined;
   const [step, setStep] = useState<Step>('form');
   const [formData, setFormData] = useState<OpenAccountFormData | null>(null);
   const [result, setResult] = useState<OpenAccountResponse | null>(null);
@@ -57,7 +60,8 @@ export function OpenAccountPage() {
       {step === 'form' && (
         <OpenAccountForm
           onSubmit={handleFormSubmit}
-          defaultCustomerId={formData?.customerId}
+          defaultCustomerId={formData?.customerId ?? prefilledCustomerId}
+          lockCustomerId={!!prefilledCustomerId}
         />
       )}
 
