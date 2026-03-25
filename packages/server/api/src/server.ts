@@ -19,6 +19,8 @@ async function main(): Promise<void> {
     rateLimitWindowMs: config.RATE_LIMIT_WINDOW_MS,
     rateLimitMax: config.RATE_LIMIT_MAX,
     idempotencyTtlMs: config.IDEMPOTENCY_TTL_MS,
+    nodeEnv: config.NODE_ENV,
+    jwtPrivateKeyPath: config.JWT_PRIVATE_KEY_PATH,
   };
 
   const app = createApp(appConfig);

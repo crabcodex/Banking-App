@@ -111,3 +111,23 @@ pnpm test --filter @bank/shared -- --watch   # modo watch en un paquete
 ```
 
 Cobertura mínima: 80% statements. Patrón de tests: `Given (eventos) → When (comando) → Then (eventos emitidos)`.
+
+## Desarrollo: autenticación
+
+En modo desarrollo (`NODE_ENV=development`), el API expone un endpoint para generar tokens JWT válidos sin necesidad del contexto de Identity:
+
+```bash
+# Generar token con valores por defecto (admin, 24h)
+curl -s -X POST http://localhost:3000/api/dev/token \
+  -H "Content-Type: application/json" -d "{}"
+
+# Generar token personalizado
+curl -s -X POST http://localhost:3000/api/dev/token \
+  -H "Content-Type: application/json" \
+  -d '{"sub":"<uuid>","role":"admin","expiresIn":"7d"}'
+```
+
+> **El frontend (React) inyecta el token automáticamente** en modo desarrollo. No es necesario configurar nada para probar desde el navegador.
+> También se genera un `Idempotency-Key` automático en cada request de escritura.
+
+Este endpoint **no existe en producción**.

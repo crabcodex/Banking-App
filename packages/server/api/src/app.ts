@@ -8,6 +8,7 @@ import { requestLogger } from './middleware/requestLogger';
 import { errorHandler } from './middleware/errorHandler';
 import { healthRoutes } from './routes/health';
 import { accountRoutes } from './routes/accounts';
+import { devRoutes } from './routes/dev';
 
 export interface AppConfig {
   tokenVerifier?: ITokenVerifier;
@@ -15,6 +16,8 @@ export interface AppConfig {
   rateLimitWindowMs?: number;
   rateLimitMax?: number;
   idempotencyTtlMs?: number;
+  nodeEnv?: string;
+  jwtPrivateKeyPath?: string;
 }
 
 /**
@@ -53,6 +56,12 @@ export function createApp(config: AppConfig = {}): express.Application {
     tokenVerifier: config.tokenVerifier,
     idempotencyTtlMs: config.idempotencyTtlMs,
   }));
+
+  // -- Rutas de desarrollo (solo en development) --
+  if (config.nodeEnv === 'development' && config.jwtPrivateKeyPath) {
+    app.use('/api', devRoutes(config.jwtPrivateKeyPath));
+    console.log('Rutas de desarrollo habilitadas: POST /api/dev/token');
+  }
 
   // -- Error handler --
   app.use(errorHandler);

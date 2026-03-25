@@ -18,6 +18,25 @@ export class ApiError extends Error {
 
 const BASE_URL = '/api';
 
+let cachedToken: string | null = null;
+let tokenExpiresAt = 0;
+
+async function getDevToken(): Promise<string> {
+  const now = Date.now();
+  if (cachedToken && now < tokenExpiresAt) return cachedToken;
+
+  const res = await fetch(`${BASE_URL}/dev/token`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({}),
+  });
+
+  const json = await res.json();
+  cachedToken = json.data.token;
+  tokenExpiresAt = now + 23 * 60 * 60 * 1000; // 23h (margen sobre las 24h del token)
+  return cachedToken!;
+}
+
 async function request<T>(
   method: string,
   path: string,
@@ -28,6 +47,17 @@ async function request<T>(
     'Content-Type': 'application/json',
     ...headers,
   };
+
+  // Inyectar token de desarrollo si no se proporcionó Authorization
+  if (!reqHeaders['Authorization'] && import.meta.env.DEV) {
+    const token = await getDevToken();
+    reqHeaders['Authorization'] = `Bearer ${token}`;
+  }
+
+  // Generar Idempotency-Key para mutaciones si no se proporcionó
+  if (!reqHeaders['Idempotency-Key'] && method !== 'GET') {
+    reqHeaders['Idempotency-Key'] = crypto.randomUUID();
+  }
 
   const res = await fetch(`${BASE_URL}${path}`, {
     method,
