@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import type { Request, Response, NextFunction } from 'express';
-import { validateBody } from '../../src/middleware/validateBody';
-import { openAccountSchema } from '../../src/schemas/openAccountSchema';
+import { validateBody } from '../../src/http/middleware/validateBody';
+import { openAccountSchema } from '../../src/http/schemas/openAccountSchema';
 
 function mockReq(body: unknown): Request {
   return { body, headers: { 'x-request-id': 'req-123' } } as unknown as Request;

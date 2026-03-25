@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import type { Request, Response } from 'express';
-import { ApiResponse } from '../../src/shared/ApiResponse';
+import { ApiResponse } from '../../src/http/shared/ApiResponse';
 
 describe('ApiResponse', () => {
   it('debe crear respuesta exitosa con ok()', () => {

@@ -5,9 +5,9 @@ import { WriteDrizzleProvider, DrizzleEventStore, DrizzleSnapshotStore, InMemory
 import { ReadDrizzleProvider, ProjectionRunner, DrizzleProjectionCheckpoint } from '@bank/projection-engine';
 import { registerAccountsContext } from '@bank/accounts';
 import { RabbitMQConnection, OutboxRelay } from '@bank/messaging';
-import { CommandBus } from '../infrastructure/CommandBus';
-import { LoggingMiddleware } from '../infrastructure/middleware/LoggingMiddleware';
-import { JoseTokenVerifier } from '../infrastructure/JoseTokenVerifier';
+import { CommandBus } from '../bus/CommandBus';
+import { LoggingMiddleware } from '../bus/middleware/LoggingMiddleware';
+import { JoseTokenVerifier } from '../adapters/JoseTokenVerifier';
 import type { EnvConfig } from '../config/env';
 
 /**

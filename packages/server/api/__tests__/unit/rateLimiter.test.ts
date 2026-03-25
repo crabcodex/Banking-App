@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { createRateLimiter, sensitiveRateLimiter } from '../../src/middleware/rateLimiter';
+import { createRateLimiter, sensitiveRateLimiter } from '../../src/http/middleware/rateLimiter';
 
 describe('createRateLimiter', () => {
   it('debe retornar un middleware (función)', () => {

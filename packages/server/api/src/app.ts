@@ -1,14 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import type { ITokenVerifier } from '@bank/shared';
-import { securityHeaders } from './middleware/securityHeaders';
-import { createRateLimiter } from './middleware/rateLimiter';
-import { requestIdMiddleware } from './middleware/requestId';
-import { requestLogger } from './middleware/requestLogger';
-import { errorHandler } from './middleware/errorHandler';
-import { healthRoutes } from './routes/health';
-import { accountRoutes } from './routes/accounts';
-import { devRoutes } from './routes/dev';
+import { securityHeaders } from './http/middleware/securityHeaders';
+import { createRateLimiter } from './http/middleware/rateLimiter';
+import { requestIdMiddleware } from './http/middleware/requestId';
+import { requestLogger } from './http/middleware/requestLogger';
+import { errorHandler } from './http/middleware/errorHandler';
+import { healthRoutes } from './http/routes/health';
+import { accountRoutes } from './http/routes/accounts';
+import { devRoutes } from './http/routes/dev';
 
 export interface AppConfig {
   tokenVerifier?: ITokenVerifier;

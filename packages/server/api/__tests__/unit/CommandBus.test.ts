@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { container } from 'tsyringe';
-import { CommandBus } from '../../src/infrastructure/CommandBus';
+import { CommandBus } from '../../src/bus/CommandBus';
 import type { ICommand, ICommandMiddleware } from '@bank/shared';
 
 function createCommand(overrides: Partial<ICommand> = {}): ICommand {

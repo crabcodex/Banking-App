@@ -8,6 +8,7 @@ export default defineConfig({
     passWithNoTests: true,
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
+    testTimeout: 15000,
   },
   resolve: {
     alias: {

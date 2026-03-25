@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import type { RequestHandler } from 'express';
 import type { ITokenVerifier } from '@bank/shared';
-import { AccountController } from '../controllers/AccountController';
+import { AccountController } from '../../controllers/AccountController';
+import { asyncHandler } from '../middleware/asyncHandler';
 import { validateBody } from '../middleware/validateBody';
 import { requireAuth } from '../middleware/auth';
 import { idempotency } from '../middleware/idempotency';
@@ -30,7 +31,7 @@ export function accountRoutes(config: AccountRoutesConfig = {}): Router {
   pipeline.push(idempotency({ ttlMs: config.idempotencyTtlMs }));
   pipeline.push(validateBody(openAccountSchema));
 
-  router.post('/accounts', ...pipeline, AccountController.openAccount);
+  router.post('/accounts', ...pipeline, asyncHandler(AccountController.openAccount));
 
   return router;
 }

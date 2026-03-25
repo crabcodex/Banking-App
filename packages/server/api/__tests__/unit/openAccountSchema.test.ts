@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { openAccountSchema } from '../../src/schemas/openAccountSchema';
+import { openAccountSchema } from '../../src/http/schemas/openAccountSchema';
 
 describe('openAccountSchema', () => {
   const validBody = {

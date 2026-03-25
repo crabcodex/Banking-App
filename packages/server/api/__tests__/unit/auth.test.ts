@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { Request, Response, NextFunction } from 'express';
 import type { ITokenVerifier, TokenPayload } from '@bank/shared';
-import { requireAuth, requireRole } from '../../src/middleware/auth';
+import { requireAuth, requireRole } from '../../src/http/middleware/auth';
 
 function mockReq(headers: Record<string, string> = {}): Request {
   return { headers: { 'x-request-id': 'req-auth', ...headers } } as unknown as Request;

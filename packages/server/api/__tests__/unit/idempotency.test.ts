@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { Request, Response, NextFunction } from 'express';
-import { idempotency } from '../../src/middleware/idempotency';
+import { idempotency } from '../../src/http/middleware/idempotency';
 
 function mockReq(method: string, headers: Record<string, string> = {}): Request {
   return {

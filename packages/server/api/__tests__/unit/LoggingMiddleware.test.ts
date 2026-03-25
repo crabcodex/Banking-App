@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { LoggingMiddleware } from '../../src/infrastructure/middleware/LoggingMiddleware';
+import { LoggingMiddleware } from '../../src/bus/middleware/LoggingMiddleware';
 import type { ICommand } from '@bank/shared';
 
 function createCommand(): ICommand {

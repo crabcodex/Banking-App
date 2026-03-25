@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import type { Request, Response, NextFunction } from 'express';
-import { errorHandler } from '../../src/middleware/errorHandler';
+import { errorHandler } from '../../src/http/middleware/errorHandler';
 import { DomainError, ValidationError } from '@bank/shared';
 
 function mockReq(): Request {

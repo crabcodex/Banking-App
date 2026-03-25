@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { securityHeaders } from '../../src/middleware/securityHeaders';
+import { securityHeaders } from '../../src/http/middleware/securityHeaders';
 
 describe('securityHeaders', () => {
   it('debe retornar un middleware (función)', () => {

@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { ZodSchema, ZodError } from 'zod';
+import { ApiResponse } from '../shared/ApiResponse';
 
 /**
  * Middleware factory que valida req.body con un esquema Zod.
@@ -11,14 +12,11 @@ export function validateBody(schema: ZodSchema) {
     const result = schema.safeParse(req.body);
 
     if (!result.success) {
+      const requestId = req.headers['x-request-id'] as string;
       const errors = formatZodErrors(result.error);
-      res.status(400).json({
-        success: false,
-        message: 'Errores de validación',
-        data: null,
-        errors,
-        requestId: req.headers['x-request-id'],
-      });
+      res.status(400).json(
+        ApiResponse.fail('Errores de validación', errors).withRequestId(requestId),
+      );
       return;
     }
 

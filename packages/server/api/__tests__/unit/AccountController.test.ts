@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { container } from 'tsyringe';
-import type { Request, Response, NextFunction } from 'express';
+import type { Request, Response } from 'express';
 import { AccountController } from '../../src/controllers/AccountController';
 import type { ICommandBus } from '@bank/shared';
 
@@ -41,9 +41,8 @@ describe('AccountController', () => {
       initialBalance: 1000,
     });
     const res = mockRes();
-    const next: NextFunction = vi.fn();
 
-    await AccountController.openAccount(req, res, next);
+    await AccountController.openAccount(req, res);
 
     expect(res.status).toHaveBeenCalledWith(201);
     expect(res.json).toHaveBeenCalledWith(
@@ -67,9 +66,8 @@ describe('AccountController', () => {
       initialBalance: 5000,
     });
     const res = mockRes();
-    const next: NextFunction = vi.fn();
 
-    await AccountController.openAccount(req, res, next);
+    await AccountController.openAccount(req, res);
 
     expect(commandBus.dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -94,9 +92,8 @@ describe('AccountController', () => {
       initialBalance: 1000,
     });
     const res = mockRes();
-    const next: NextFunction = vi.fn();
 
-    await AccountController.openAccount(req, res, next);
+    await AccountController.openAccount(req, res);
 
     const dispatched = commandBus.dispatch.mock.calls[0][0];
     expect(dispatched.metadata.correlationId).toBe('req-456');
@@ -104,7 +101,7 @@ describe('AccountController', () => {
     expect(dispatched.metadata.timestamp).toBeInstanceOf(Date);
   });
 
-  it('debe delegar errores al middleware de errores via next()', async () => {
+  it('debe propagar errores (asyncHandler los delegara a next)', async () => {
     const error = new Error('domain error');
     commandBus.dispatch.mockRejectedValue(error);
 
@@ -116,11 +113,8 @@ describe('AccountController', () => {
       initialBalance: 100,
     });
     const res = mockRes();
-    const next: NextFunction = vi.fn();
 
-    await AccountController.openAccount(req, res, next);
-
-    expect(next).toHaveBeenCalledWith(error);
+    await expect(AccountController.openAccount(req, res)).rejects.toThrow('domain error');
     expect(res.status).not.toHaveBeenCalled();
   });
 });
