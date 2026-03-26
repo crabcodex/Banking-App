@@ -26,7 +26,13 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <AdminDashboardPage /> },
       { path: 'customers', element: <CustomersPage /> },
-      { path: 'customers/:customerId', element: <CustomerProfilePage /> },
+      { 
+        path: 'customers/:customerId', 
+        element: <CustomerProfilePage />,
+        children: [
+          { path: 'accounts/new', element: <OpenAccountPage /> }
+        ]
+      },      
       { path: 'accounts', element: <AccountsListPage /> },
       { path: 'accounts/new', element: <OpenAccountPage /> },
       { path: 'transfers', element: <TransfersPage /> },

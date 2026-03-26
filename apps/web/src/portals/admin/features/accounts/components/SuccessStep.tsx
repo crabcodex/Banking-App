@@ -25,12 +25,9 @@ export function SuccessStep({ result }: SuccessStepProps) {
           <span className="text-sm font-mono text-text-primary tracking-widest">{result.clabe}</span>
         </div>
       </CardContent>
-      <CardFooter className="justify-end">
-        <Button variant="secondary" onClick={() => navigate('/')}>
-          Ir al Dashboard
-        </Button>
-        <Button onClick={() => navigate('/accounts/new')}>
-          Abrir otra cuenta
+      <CardFooter className="justify-end px-6 py-4">
+        <Button variant="secondary" onClick={() => navigate(-1)}>
+          Cerrar
         </Button>
       </CardFooter>
     </Card>

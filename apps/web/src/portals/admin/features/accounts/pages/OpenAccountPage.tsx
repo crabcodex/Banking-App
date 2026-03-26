@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { useToast } from '@/components/ui';
+import { useSearchParams, useNavigate, useParams } from 'react-router-dom';
+import { useToast, Drawer } from '@/components/ui';
 import { useOpenAccount } from '../hooks/useOpenAccount';
 import { OpenAccountForm } from '../components/OpenAccountForm';
 import { ConfirmationStep } from '../components/ConfirmationStep';
@@ -13,7 +13,9 @@ type Step = 'form' | 'confirm' | 'success';
 
 export function OpenAccountPage() {
   const [searchParams] = useSearchParams();
-  const prefilledCustomerId = searchParams.get('customerId') ?? undefined;
+  const { customerId } = useParams();
+  const navigate = useNavigate();
+  const prefilledCustomerId = customerId ?? searchParams.get('customerId') ?? undefined;
   const [step, setStep] = useState<Step>('form');
   const [formData, setFormData] = useState<OpenAccountFormData | null>(null);
   const [result, setResult] = useState<OpenAccountResponse | null>(null);
@@ -48,35 +50,39 @@ export function OpenAccountPage() {
     setStep('form');
   };
 
+  const handleClose = () => {
+    // If we have a success state or just cancelling, go back to previous page
+    navigate(-1);
+  };
+
   return (
-    <div className="mx-auto max-w-lg">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-text-primary">Abrir Cuenta</h1>
-        <p className="mt-1 text-sm text-text-secondary">
-          Completa el formulario para abrir una nueva cuenta bancaria.
+    <Drawer isOpen={true} onClose={handleClose} title="Abrir Cuenta">
+      <div className="flex flex-col gap-6">
+        <p className="text-sm text-text-secondary">
+          Completa el formulario para abrir una nueva cuenta bancaria al cliente correspondiente.
         </p>
+
+        {step === 'form' && (
+          <OpenAccountForm
+            onSubmit={handleFormSubmit}
+            defaultCustomerId={formData?.customerId ?? prefilledCustomerId}
+            lockCustomerId={!!prefilledCustomerId}
+          />
+        )}
+
+        {step === 'confirm' && formData && (
+          <ConfirmationStep
+            data={formData}
+            onConfirm={handleConfirm}
+            onBack={handleBack}
+            loading={mutation.isPending}
+          />
+        )}
+
+        {step === 'success' && result && (
+          <SuccessStep result={result} />
+        )}
       </div>
-
-      {step === 'form' && (
-        <OpenAccountForm
-          onSubmit={handleFormSubmit}
-          defaultCustomerId={formData?.customerId ?? prefilledCustomerId}
-          lockCustomerId={!!prefilledCustomerId}
-        />
-      )}
-
-      {step === 'confirm' && formData && (
-        <ConfirmationStep
-          data={formData}
-          onConfirm={handleConfirm}
-          onBack={handleBack}
-          loading={mutation.isPending}
-        />
-      )}
-
-      {step === 'success' && result && (
-        <SuccessStep result={result} />
-      )}
-    </div>
+    </Drawer>
   );
 }

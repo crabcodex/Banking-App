@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, Outlet } from 'react-router-dom';
 import { Card, CardHeader, CardContent, Badge, Button } from '@/components/ui';
 import { ArrowLeft, UserPlus, Mail, Phone, Calendar, CreditCard, FileText } from 'lucide-react';
 
@@ -40,7 +40,7 @@ export function CustomerProfilePage() {
   const customer = MOCK_CUSTOMER;
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div>
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <Link to="/admin/customers">
@@ -55,12 +55,13 @@ export function CustomerProfilePage() {
         <Badge variant="success">Activo</Badge>
       </div>
 
-      <div className="flex flex-col gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Datos personales */}
+        <div className="lg:col-span-1">
         <Card>
           <CardHeader title="Datos personales" />
           <CardContent>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
               <InfoRow icon={FileText} label="CURP" value={customer.curp} />
               <InfoRow icon={CreditCard} label="RFC" value={customer.rfc} />
               <InfoRow icon={Mail} label="Correo" value={customer.email} />
@@ -69,13 +70,15 @@ export function CustomerProfilePage() {
             </div>
           </CardContent>
         </Card>
+        </div>
 
         {/* Cuentas del cliente */}
+        <div className="lg:col-span-2">
         <Card>
           <CardHeader
             title="Cuentas"
             action={
-              <Link to={`/admin/accounts/new?customerId=${customer.id}`}>
+              <Link to={`/admin/customers/${customer.id}/accounts/new`}>
                 <Button size="sm">
                   <UserPlus className="w-4 h-4" />
                   Abrir nueva cuenta
@@ -116,7 +119,9 @@ export function CustomerProfilePage() {
             )}
           </CardContent>
         </Card>
+        </div>
       </div>
+      <Outlet />
     </div>
   );
 }

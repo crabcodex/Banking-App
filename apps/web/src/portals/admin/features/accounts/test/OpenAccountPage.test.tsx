@@ -6,7 +6,7 @@ import { ToastProvider } from '@/components/ui';
 import { OpenAccountPage } from '../pages/OpenAccountPage';
 import { http, HttpResponse } from 'msw';
 import { server } from '@/test/server';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 
 function renderPage() {
   const queryClient = new QueryClient({
@@ -30,6 +30,9 @@ function renderPage() {
 const VALID_UUID = 'a1b2c3d4-e5f6-7890-abcd-ef1234567890';
 
 describe('OpenAccountPage', () => {
+  afterEach(() => {
+    document.body.style.overflow = '';
+  });
   it('muestra el formulario inicialmente', () => {
     renderPage();
 
@@ -43,7 +46,7 @@ describe('OpenAccountPage', () => {
   });
 
   it('muestra errores de validación si se envía vacío', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     renderPage();
 
     await user.click(screen.getByRole('button', { name: 'Revisar datos' }));
@@ -54,7 +57,7 @@ describe('OpenAccountPage', () => {
   });
 
   it('navega al paso de confirmación con datos válidos', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     renderPage();
 
     await user.type(screen.getByLabelText('ID del Cliente'), VALID_UUID);
@@ -77,7 +80,7 @@ describe('OpenAccountPage', () => {
   });
 
   it('permite regresar al formulario desde la confirmación', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     renderPage();
 
     await user.type(screen.getByLabelText('ID del Cliente'), VALID_UUID);
@@ -100,7 +103,7 @@ describe('OpenAccountPage', () => {
   });
 
   it('crea la cuenta exitosamente y muestra resultado', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     renderPage();
 
     await user.type(screen.getByLabelText('ID del Cliente'), VALID_UUID);
@@ -122,8 +125,7 @@ describe('OpenAccountPage', () => {
     });
 
     expect(screen.getByText('012345678901234567')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Ir al Dashboard' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Abrir otra cuenta' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Cerrar' })).toBeInTheDocument();
   });
 
   it('muestra toast de error cuando la API falla', async () => {
@@ -141,7 +143,7 @@ describe('OpenAccountPage', () => {
       }),
     );
 
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     renderPage();
 
     await user.type(screen.getByLabelText('ID del Cliente'), VALID_UUID);
