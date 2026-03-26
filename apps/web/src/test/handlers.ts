@@ -1,5 +1,5 @@
 import { http, HttpResponse } from 'msw';
-import { accountHandlers } from '@/portals/admin/features/accounts/test/handlers';
+import { accountHandlers } from './handlers/accounts';
 
 const globalHandlers = [
   http.post('/api/dev/token', () => {
