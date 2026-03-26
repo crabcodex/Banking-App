@@ -15,9 +15,13 @@ export { ForbiddenError } from './errors/ForbiddenError';
 export { ValidationError } from './errors/ValidationError';
 
 // -- Aplicacion (CQRS) --
+export type { ICommand, CommandMetadata } from './application/ICommand';
+export type { ICommandBus } from './application/ICommandBus';
+export type { ICommandMiddleware, NextMiddleware } from './application/ICommandMiddleware';
 export type { ICommandHandler } from './application/ICommandHandler';
 export type { IQueryHandler } from './application/IQueryHandler';
 export type { IEventHandler } from './application/IEventHandler';
+export type { ITokenVerifier, TokenPayload } from './application/ITokenVerifier';
 
 // -- Infraestructura (contratos) --
 export type { IEventStore } from './infrastructure/event-store/IEventStore';

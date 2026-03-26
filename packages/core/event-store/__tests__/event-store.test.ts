@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { DrizzleProvider } from '../src/DrizzleProvider';
+import { WriteDrizzleProvider } from '../src/DrizzleProvider';
 import { DrizzleEventStore } from '../src/DrizzleEventStore';
 import { DrizzleSnapshotStore } from '../src/DrizzleSnapshotStore';
 import { InMemoryEventBus } from '../src/InMemoryEventBus';
@@ -30,11 +30,11 @@ const meta: EventMetadata = {
 // -- Tests --
 
 describe('DrizzleEventStore', () => {
-  let provider: DrizzleProvider;
+  let provider: WriteDrizzleProvider;
   let store: DrizzleEventStore;
 
   beforeEach(async () => {
-    provider = new DrizzleProvider();
+    provider = new WriteDrizzleProvider();
     await provider.initialize(); // en memoria
     store = new DrizzleEventStore(provider);
   });
@@ -84,11 +84,11 @@ describe('DrizzleEventStore', () => {
 });
 
 describe('DrizzleSnapshotStore', () => {
-  let provider: DrizzleProvider;
+  let provider: WriteDrizzleProvider;
   let snapStore: DrizzleSnapshotStore;
 
   beforeEach(async () => {
-    provider = new DrizzleProvider();
+    provider = new WriteDrizzleProvider();
     await provider.initialize();
     snapStore = new DrizzleSnapshotStore(provider);
   });

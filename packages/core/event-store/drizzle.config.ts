@@ -5,4 +5,7 @@ export default defineConfig({
   schema: './packages/core/event-store/src/schemas/index.ts',
   out: './packages/core/event-store/drizzle',
   dialect: 'postgresql',
+  dbCredentials: {
+    url: process.env.DATABASE_WRITE_URL!,
+  },
 });

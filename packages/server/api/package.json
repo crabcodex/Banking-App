@@ -15,6 +15,8 @@
   "dependencies": {
     "@bank/shared": "workspace:*",
     "@bank/event-store": "workspace:*",
-    "@bank/projection-engine": "workspace:*"
+    "@bank/projection-engine": "workspace:*",
+    "@bank/accounts": "workspace:*",
+    "@bank/messaging": "workspace:*"
   }
 }

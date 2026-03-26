@@ -55,7 +55,14 @@ export class DrizzleEventStore implements IEventStore {
           occurredOn: event.occurredOn,
         });
       } catch (error: any) {
-        if (error.message?.includes('unique') || error.message?.includes('duplicate')) {
+        const msg = error.message?.toLowerCase() ?? '';
+        if (
+          msg.includes('unique') ||
+          msg.includes('duplicate') ||
+          error.code === '23505' ||
+          error.constraint_name?.includes('events') ||
+          (msg.includes('failed query') && msg.includes('events'))
+        ) {
           const current = await this.loadStream(streamId);
           throw new ConcurrencyError(streamId, expectedVersion, current.version);
         }
