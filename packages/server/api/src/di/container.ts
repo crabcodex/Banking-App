@@ -43,8 +43,15 @@ export async function setupContainer(config: EnvConfig): Promise<void> {
   container.register(DrizzleProjectionCheckpoint, { useClass: DrizzleProjectionCheckpoint });
   container.register(ProjectionRunner, { useClass: ProjectionRunner });
 
+  // Fijar como singleton para que todos los bounded contexts compartan la misma instancia
+  const runner = container.resolve(ProjectionRunner);
+  container.register(ProjectionRunner, { useValue: runner });
+
   // -- Bounded Contexts --
   await registerAccountsContext();
+
+  // Iniciar polling de proyecciones (catch-up desde event store → read model)
+  runner.startPolling(config.PROJECTION_POLL_MS);
 
   // -- Token Verifier --
   // TODO(@bank/identity): Reemplazar JoseTokenVerifier por la implementación real

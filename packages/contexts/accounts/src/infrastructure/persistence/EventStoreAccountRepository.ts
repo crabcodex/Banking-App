@@ -1,8 +1,8 @@
 import { inject, injectable } from 'tsyringe';
 import type { IEventStore, ISnapshotStore } from '@bank/shared';
-import type { IAccountRepository } from '../domain/repositories/IAccountRepository';
-import { Account } from '../domain/Account';
-import { AccountEventDeserializer } from './AccountEventDeserializer';
+import type { IAccountRepository } from '../../domain/repositories/IAccountRepository';
+import { Account } from '../../domain/Account';
+import { AccountEventDeserializer } from '../AccountEventDeserializer';
 
 /**
  * Repositorio de cuentas basado en Event Sourcing.

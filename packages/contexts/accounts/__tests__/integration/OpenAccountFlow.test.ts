@@ -3,10 +3,10 @@ import { WriteDrizzleProvider, DrizzleEventStore, DrizzleSnapshotStore } from '@
 import { ReadDrizzleProvider } from '@bank/projection-engine';
 import { OpenAccountHandler } from '../../src/application/commands/OpenAccountHandler';
 import { AccountFactory } from '../../src/domain/AccountFactory';
-import { EventStoreAccountRepository } from '../../src/infrastructure/EventStoreAccountRepository';
-import { RandomCLABEGenerator } from '../../src/infrastructure/RandomCLABEGenerator';
-import { StubCustomerActiveSpec } from '../../src/infrastructure/StubCustomerActiveSpec';
-import { ReadModelMaxAccountsSpec } from '../../src/infrastructure/ReadModelMaxAccountsSpec';
+import { EventStoreAccountRepository } from '../../src/infrastructure/persistence/EventStoreAccountRepository';
+import { RandomCLABEGenerator } from '../../src/infrastructure/services/RandomCLABEGenerator';
+import { StubCustomerActiveSpec } from '../../src/infrastructure/specifications/StubCustomerActiveSpec';
+import { ReadModelMaxAccountsSpec } from '../../src/infrastructure/specifications/ReadModelMaxAccountsSpec';
 import { AccountListProjection } from '../../src/infrastructure/projections/AccountListProjection';
 import { migrateAccountsReadModel } from '../../src/infrastructure/initializeReadModel';
 import { accountsReadModel } from '../../src/infrastructure/schemas/accountsReadModel';
