@@ -90,4 +90,28 @@ describe('searchAccountsSchema', () => {
     });
     expect(result.success).toBe(true);
   });
+
+  it('debe rechazar IN con value string (requiere array)', () => {
+    const result = searchAccountsSchema.safeParse({
+      ...validBody,
+      filters: [{ field: 'type', operator: 'IN', value: 'AHORRO' }],
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('debe rechazar EQUALS con value array (requiere string)', () => {
+    const result = searchAccountsSchema.safeParse({
+      ...validBody,
+      filters: [{ field: 'type', operator: 'EQUALS', value: ['AHORRO'] }],
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it('debe rechazar IN con array vacío', () => {
+    const result = searchAccountsSchema.safeParse({
+      ...validBody,
+      filters: [{ field: 'type', operator: 'IN', value: [] }],
+    });
+    expect(result.success).toBe(false);
+  });
 });

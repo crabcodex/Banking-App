@@ -3,6 +3,7 @@ export type { AppConfig } from './app';
 export { loadEnvConfig } from './config/env';
 export type { EnvConfig } from './config/env';
 export { setupContainer } from './di/container';
+export type { ContainerTeardown } from './di/container';
 export { CommandBus } from './bus/CommandBus';
 export { LoggingMiddleware } from './bus/middleware/LoggingMiddleware';
 export { JoseTokenVerifier } from './adapters/JoseTokenVerifier';

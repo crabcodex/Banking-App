@@ -46,7 +46,7 @@ export class AccountController {
    * POST /api/accounts/search
    * Busca cuentas aplicando Criteria. Seguridad por rol:
    * - customer: fuerza customerId = JWT sub (nunca ve cuentas ajenas)
-   * - admin/officer: requiere al menos un filtro (validado por Zod)
+   * - admin/officer: listado general sin filtros o con filtros opcionales
    */
   static async searchAccounts(req: Request, res: Response): Promise<void> {
     const body = req.body as SearchAccountsBody;

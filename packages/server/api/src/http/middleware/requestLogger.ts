@@ -5,7 +5,7 @@ const isDev = process.env.NODE_ENV === 'development';
 
 /**
  * Middleware de logging estructurado con Pino.
- * En desarrollo: una linea legible por request (metodo, url, status, tiempo).
+ * En desarrollo: serializa solo campos minimos (method, url, statusCode).
  * En produccion: JSON estructurado completo.
  */
 export const requestLogger = pinoHttp({

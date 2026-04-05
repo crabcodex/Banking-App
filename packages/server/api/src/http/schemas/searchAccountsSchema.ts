@@ -1,14 +1,22 @@
 import { z } from 'zod';
 
-const filterSchema = z.object({
-  field: z.enum(['customerId', 'type', 'currency', 'status', 'clabe'], {
-    message: 'Campo de filtro inválido',
-  }),
-  operator: z.enum(['EQUALS', 'NOT_EQUALS', 'IN', 'CONTAINS'], {
-    message: 'Operador inválido',
-  }),
-  value: z.union([z.string(), z.array(z.string())]),
+const fieldEnum = z.enum(['customerId', 'type', 'currency', 'status', 'clabe'], {
+  message: 'Campo de filtro inválido',
 });
+
+const scalarFilter = z.object({
+  field: fieldEnum,
+  operator: z.enum(['EQUALS', 'NOT_EQUALS', 'CONTAINS'], { message: 'Operador inválido' }),
+  value: z.string({ message: 'value debe ser string para este operador' }),
+});
+
+const inFilter = z.object({
+  field: fieldEnum,
+  operator: z.literal('IN'),
+  value: z.array(z.string()).nonempty({ message: 'value debe ser un array no vacío para IN' }),
+});
+
+const filterSchema = z.discriminatedUnion('operator', [scalarFilter, inFilter]);
 
 /** Esquema Zod para validar el body de POST /api/accounts/search */
 export const searchAccountsSchema = z.object({

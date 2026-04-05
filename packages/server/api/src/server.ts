@@ -11,7 +11,7 @@ import { setupContainer } from './di/container';
  */
 async function main(): Promise<void> {
   const config = loadEnvConfig();
-  await setupContainer(config);
+  const teardown = await setupContainer(config);
 
   const appConfig: AppConfig = {
     tokenVerifier: container.resolve<ITokenVerifier>('ITokenVerifier'),
@@ -25,9 +25,19 @@ async function main(): Promise<void> {
 
   const app = createApp(appConfig);
 
-  app.listen(config.PORT, () => {
+  const server = app.listen(config.PORT, () => {
     console.log(`Servidor iniciado en puerto ${config.PORT} [${config.NODE_ENV}]`);
   });
+
+  const onSignal = async () => {
+    console.log('Señal recibida, cerrando servidor HTTP...');
+    server.close();
+    await teardown.shutdown();
+    process.exit(0);
+  };
+
+  process.on('SIGTERM', onSignal);
+  process.on('SIGINT', onSignal);
 }
 
 main().catch((err) => {

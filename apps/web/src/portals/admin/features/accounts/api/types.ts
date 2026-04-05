@@ -13,11 +13,11 @@ export interface OpenAccountResponse {
 
 // -- Búsqueda de cuentas --
 
-export interface AccountFilter {
-  field: 'customerId' | 'type' | 'currency' | 'status' | 'clabe';
-  operator: 'EQUALS' | 'NOT_EQUALS' | 'IN' | 'CONTAINS';
-  value: string | string[];
-}
+export type AccountFilter =
+  | { field: AccountFilterField; operator: 'EQUALS' | 'NOT_EQUALS' | 'CONTAINS'; value: string }
+  | { field: AccountFilterField; operator: 'IN'; value: string[] };
+
+type AccountFilterField = 'customerId' | 'type' | 'currency' | 'status' | 'clabe';
 
 export interface SearchAccountsRequest {
   filters: AccountFilter[];

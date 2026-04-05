@@ -14,7 +14,11 @@ import type { EnvConfig } from '../config/env';
  * Configura el contenedor DI raiz.
  * Se invoca una sola vez al iniciar la aplicacion.
  */
-export async function setupContainer(config: EnvConfig): Promise<void> {
+export interface ContainerTeardown {
+  shutdown(): Promise<void>;
+}
+
+export async function setupContainer(config: EnvConfig): Promise<ContainerTeardown> {
   const start = performance.now();
 
   // Inicializar ambas DBs en paralelo
@@ -84,4 +88,23 @@ export async function setupContainer(config: EnvConfig): Promise<void> {
   } else {
     console.log('AMQP_URL no configurada — OutboxRelay desactivado');
   }
+
+  return {
+    async shutdown() {
+      console.log('Graceful shutdown iniciado...');
+      runner.stopPolling();
+
+      const outboxRelay = config.AMQP_URL
+        ? container.resolve<{ stop(): Promise<void> }>('OutboxRelay')
+        : null;
+      if (outboxRelay) await outboxRelay.stop();
+
+      const rabbit = config.AMQP_URL
+        ? container.resolve<{ close(): Promise<void> }>('RabbitMQConnection')
+        : null;
+      if (rabbit) await rabbit.close();
+
+      console.log('Graceful shutdown completado');
+    },
+  };
 }
