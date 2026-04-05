@@ -1,10 +1,10 @@
 import { inject, injectable } from 'tsyringe';
 import { eq, and, sql } from 'drizzle-orm';
 import type { ReadDrizzleProvider } from '@bank/projection-engine';
-import type { IMaxAccountsPerTypeSpec } from '../domain/specifications/IMaxAccountsPerTypeSpec';
-import type { AccountType } from '../domain/value-objects/AccountType';
-import { MaxAccountsReachedError } from '../domain/errors';
-import { accountsReadModel } from './schemas/accountsReadModel';
+import type { IMaxAccountsPerTypeSpec } from '../../domain/specifications/IMaxAccountsPerTypeSpec';
+import type { AccountType } from '../../domain/value-objects/AccountType';
+import { MaxAccountsReachedError } from '../../domain/errors';
+import { accountsReadModel } from '../schemas/accountsReadModel';
 
 const MAX_ACCOUNTS_PER_TYPE = 3;
 

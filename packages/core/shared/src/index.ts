@@ -22,6 +22,7 @@ export type { ICommandHandler } from './application/ICommandHandler';
 export type { IQueryHandler } from './application/IQueryHandler';
 export type { IEventHandler } from './application/IEventHandler';
 export type { ITokenVerifier, TokenPayload } from './application/ITokenVerifier';
+export type { Filter, FilterOperator, Order, Criteria, PaginatedResult } from './application/Criteria';
 
 // -- Infraestructura (contratos) --
 export type { IEventStore } from './infrastructure/event-store/IEventStore';

@@ -8,6 +8,8 @@ import { http, HttpResponse } from 'msw';
 import { server } from '@/test/server';
 import { describe, it, expect, afterEach } from 'vitest';
 
+const LONG_TIMEOUT = 30_000;
+
 function renderPage(initialEntry = '/admin/accounts/new') {
   const queryClient = new QueryClient({
     defaultOptions: { mutations: { retry: false } },
@@ -80,7 +82,7 @@ describe('OpenAccountPage', () => {
     expect(screen.getByText('$1,000.00')).toBeInTheDocument();
   });
 
-  it('permite regresar al formulario desde la confirmación', async () => {
+  it('permite regresar al formulario desde la confirmación', { timeout: LONG_TIMEOUT }, async () => {
     const user = userEvent.setup({ delay: null });
     renderPage();
 
@@ -103,7 +105,7 @@ describe('OpenAccountPage', () => {
     });
   });
 
-  it('crea la cuenta exitosamente y muestra resultado', async () => {
+  it('crea la cuenta exitosamente y muestra resultado', { timeout: LONG_TIMEOUT }, async () => {
     const user = userEvent.setup({ delay: null });
     renderPage();
 

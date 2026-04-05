@@ -1,5 +1,5 @@
 import { injectable } from 'tsyringe';
-import type { ICustomerActiveSpec } from '../domain/specifications/ICustomerActiveSpec';
+import type { ICustomerActiveSpec } from '../../domain/specifications/ICustomerActiveSpec';
 
 /**
  * Stub: siempre aprueba.

@@ -10,6 +10,7 @@
     "apps/*"
   ],
   "scripts": {
+    "prepare": "husky",
     "dev": "turbo dev",
     "build": "turbo build",
     "test": "turbo test",
@@ -84,6 +85,7 @@
     "dotenv-cli": "^11.0.0",
     "drizzle-kit": "^0.31.0",
     "eslint": "^10.0.0",
+    "husky": "^9.1.7",
     "msw": "^2.3.1",
     "postcss": "^8.4.38",
     "prettier": "^3.4.0",

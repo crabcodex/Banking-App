@@ -3,6 +3,8 @@ import { container } from 'tsyringe';
 import type { Request, Response } from 'express';
 import { AccountController } from '../../src/controllers/AccountController';
 import type { ICommandBus } from '@bank/shared';
+// Importa augmentation de Express.Request.user
+import '../../src/http/middleware/auth';
 
 function mockReq(body: Record<string, unknown> = {}): Request {
   return {
@@ -116,5 +118,98 @@ describe('AccountController', () => {
 
     await expect(AccountController.openAccount(req, res)).rejects.toThrow('domain error');
     expect(res.status).not.toHaveBeenCalled();
+  });
+});
+
+describe('AccountController.searchAccounts', () => {
+  let searchHandler: { execute: ReturnType<typeof vi.fn> };
+
+  beforeEach(() => {
+    searchHandler = { execute: vi.fn() };
+    container.register('SearchAccountsHandler', { useValue: searchHandler });
+  });
+
+  it('debe responder 200 con resultado paginado', async () => {
+    const paginatedResult = {
+      items: [{ id: 'acc-1', customerId: 'cust-1', type: 'AHORRO' }],
+      total: 1,
+      limit: 20,
+      offset: 0,
+    };
+    searchHandler.execute.mockResolvedValue(paginatedResult);
+
+    const req = mockReq({
+      filters: [{ field: 'customerId', operator: 'EQUALS', value: 'cust-1' }],
+      limit: 20,
+      offset: 0,
+    });
+    const res = mockRes();
+
+    await AccountController.searchAccounts(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: true,
+        message: 'Cuentas encontradas',
+        data: paginatedResult,
+        requestId: 'req-456',
+      }),
+    );
+  });
+
+  it('debe forzar customerId desde JWT cuando el rol es customer', async () => {
+    searchHandler.execute.mockResolvedValue({ items: [], total: 0, limit: 20, offset: 0 });
+
+    const req = mockReq({
+      filters: [{ field: 'type', operator: 'EQUALS', value: 'AHORRO' }],
+      limit: 20,
+      offset: 0,
+    });
+    req.user = { sub: 'jwt-customer-id', role: 'customer' };
+    const res = mockRes();
+
+    await AccountController.searchAccounts(req, res);
+
+    const query = searchHandler.execute.mock.calls[0][0];
+    expect(query.criteria.filters[0]).toEqual({
+      field: 'customerId',
+      operator: 'EQUALS',
+      value: 'jwt-customer-id',
+    });
+  });
+
+  it('debe ignorar customerId del body si el rol es customer', async () => {
+    searchHandler.execute.mockResolvedValue({ items: [], total: 0, limit: 20, offset: 0 });
+
+    const req = mockReq({
+      filters: [{ field: 'customerId', operator: 'EQUALS', value: 'otro-customer' }],
+      limit: 20,
+      offset: 0,
+    });
+    req.user = { sub: 'jwt-customer-id', role: 'customer' };
+    const res = mockRes();
+
+    await AccountController.searchAccounts(req, res);
+
+    const query = searchHandler.execute.mock.calls[0][0];
+    const customerFilters = query.criteria.filters.filter(
+      (f: any) => f.field === 'customerId',
+    );
+    expect(customerFilters).toHaveLength(1);
+    expect(customerFilters[0].value).toBe('jwt-customer-id');
+  });
+
+  it('debe propagar errores del handler', async () => {
+    searchHandler.execute.mockRejectedValue(new Error('read db error'));
+
+    const req = mockReq({
+      filters: [{ field: 'customerId', operator: 'EQUALS', value: 'cust-1' }],
+      limit: 20,
+      offset: 0,
+    });
+    const res = mockRes();
+
+    await expect(AccountController.searchAccounts(req, res)).rejects.toThrow('read db error');
   });
 });

@@ -3,6 +3,7 @@ import { AdminLayout } from '@/components/layout/AdminLayout';
 import { PortalSelector } from '@/components/layout/PortalSelector';
 import { AdminDashboardPage } from '@/portals/admin/features/dashboard/pages/AdminDashboardPage';
 import { DashboardPage } from '@/portals/client/features/dashboard/pages/DashboardPage';
+import { MyAccountsPage } from '@/portals/client/features/accounts/pages/MyAccountsPage';
 import { AccountsListPage } from '@/portals/admin/features/accounts/pages/AccountsListPage';
 import { OpenAccountPage } from '@/portals/admin/features/accounts/pages/OpenAccountPage';
 import { CustomersPage } from '@/portals/admin/features/customers/pages/CustomersPage';
@@ -48,6 +49,7 @@ export const router = createBrowserRouter([
     path: 'portal',
     children: [
       { index: true, element: <DashboardPage /> },
+      { path: 'accounts', element: <MyAccountsPage /> },
     ],
   },
 ]);

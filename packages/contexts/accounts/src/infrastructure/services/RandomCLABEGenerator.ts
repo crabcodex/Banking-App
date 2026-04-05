@@ -1,7 +1,7 @@
 import { randomInt } from 'node:crypto';
 import { injectable } from 'tsyringe';
-import { CLABE } from '../domain/value-objects/CLABE';
-import type { ICLABEGenerator } from '../domain/services/ICLABEGenerator';
+import { CLABE } from '../../domain/value-objects/CLABE';
+import type { ICLABEGenerator } from '../../domain/services/ICLABEGenerator';
 
 /**
  * Genera CLABEs aleatorias de 18 dígitos con crypto seguro.

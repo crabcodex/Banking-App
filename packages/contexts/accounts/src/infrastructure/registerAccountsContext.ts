@@ -1,12 +1,14 @@
 import { container } from 'tsyringe';
 import { ProjectionRunner } from '@bank/projection-engine';
-import { EventStoreAccountRepository } from './EventStoreAccountRepository';
-import { RandomCLABEGenerator } from './RandomCLABEGenerator';
-import { StubCustomerActiveSpec } from './StubCustomerActiveSpec';
-import { ReadModelMaxAccountsSpec } from './ReadModelMaxAccountsSpec';
+import { EventStoreAccountRepository } from './persistence/EventStoreAccountRepository';
+import { DrizzleAccountReadRepository } from './persistence/DrizzleAccountReadRepository';
+import { RandomCLABEGenerator } from './services/RandomCLABEGenerator';
+import { StubCustomerActiveSpec } from './specifications/StubCustomerActiveSpec';
+import { ReadModelMaxAccountsSpec } from './specifications/ReadModelMaxAccountsSpec';
 import { AccountListProjection } from './projections/AccountListProjection';
 import { AccountFactory } from '../domain/AccountFactory';
 import { OpenAccountHandler } from '../application/commands/OpenAccountHandler';
+import { SearchAccountsHandler } from '../application/queries/SearchAccountsHandler';
 
 /**
  * Registra todos los bindings del bounded context Accounts en el contenedor DI.
@@ -32,6 +34,10 @@ export async function registerAccountsContext(): Promise<void> {
 
   // 4. Command Handlers
   container.register('OpenAccountHandler', { useClass: OpenAccountHandler });
+
+  // 4b. Query Handlers + Read Repository
+  container.register('IAccountReadRepository', { useClass: DrizzleAccountReadRepository });
+  container.register('SearchAccountsHandler', { useClass: SearchAccountsHandler });
 
   // 5. Proyecciones — registrar en el ProjectionRunner
   const projection = container.resolve(AccountListProjection);

@@ -30,7 +30,7 @@ export class AccountListProjection implements IProjection {
           status: 'ACTIVE',
           alias: d['alias'] as string,
           openedAt: new Date(d['openedAt'] as string),
-        });
+        }).onConflictDoNothing();
         break;
       }
     }

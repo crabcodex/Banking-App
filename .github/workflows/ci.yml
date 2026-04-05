@@ -27,7 +27,8 @@ jobs:
         with:
           path: |
             node_modules
-            packages/*/node_modules
+            packages/*/*/node_modules
+            apps/*/node_modules
           key: deps-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
 
   typecheck:
@@ -46,7 +47,8 @@ jobs:
         with:
           path: |
             node_modules
-            packages/*/node_modules
+            packages/*/*/node_modules
+            apps/*/node_modules
           key: deps-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
       - run: pnpm build
       - run: pnpm typecheck
@@ -67,7 +69,8 @@ jobs:
         with:
           path: |
             node_modules
-            packages/*/node_modules
+            packages/*/*/node_modules
+            apps/*/node_modules
           key: deps-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
       - run: pnpm test
 
@@ -87,6 +90,7 @@ jobs:
         with:
           path: |
             node_modules
-            packages/*/node_modules
+            packages/*/*/node_modules
+            apps/*/node_modules
           key: deps-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
       - run: pnpm build
