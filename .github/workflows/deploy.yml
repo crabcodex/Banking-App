@@ -1,0 +1,37 @@
+name: Deploy
+
+on:
+  push:
+    branches: [stage, main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  resolve-env:
+    name: Resolve Environment
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.env.outputs.environment }}
+    steps:
+      - name: Determine environment
+        id: env
+        run: |
+          if [[ "${{ github.ref }}" == refs/heads/main ]]; then
+            echo "environment=production" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ github.ref }}" == refs/heads/stage ]]; then
+            echo "environment=staging" >> "$GITHUB_OUTPUT"
+          fi
+
+  deploy-backend:
+    name: Deploy Backend (Render)
+    needs: resolve-env
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: ${{ needs.resolve-env.outputs.environment }}
+
+    steps:
+      - name: Trigger Render deploy
+        run: curl -s "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
