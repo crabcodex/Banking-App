@@ -1,0 +1,8 @@
+{
+  "framework": "vite",
+  "buildCommand": "cd ../.. && pnpm install --frozen-lockfile && pnpm build --filter=@bank/web",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://banking-api-ht8j.onrender.com/api/:path*" }
+  ]
+}
