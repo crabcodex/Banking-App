@@ -49,7 +49,7 @@ async function request<T>(
   };
 
   // Inyectar token de desarrollo si no se proporcionó Authorization
-  if (!reqHeaders['Authorization'] && import.meta.env.DEV) {
+  if (!reqHeaders['Authorization'] && (import.meta.env.DEV || import.meta.env.VITE_ENABLE_DEV_TOKEN === 'true')) {
     const token = await getDevToken();
     reqHeaders['Authorization'] = `Bearer ${token}`;
   }

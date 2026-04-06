@@ -5,7 +5,7 @@ import { z } from 'zod';
  * Falla rapido si faltan variables requeridas.
  */
 const envSchema = z.object({
-  NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  NODE_ENV: z.enum(['development', 'staging', 'production', 'test']).default('development'),
   PORT: z.coerce.number().default(3000),
 
   // PostgreSQL (Supabase)
