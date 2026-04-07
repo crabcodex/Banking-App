@@ -27,6 +27,10 @@ export interface AppConfig {
 export function createApp(config: AppConfig = {}): express.Application {
   const app = express();
 
+  if (config.nodeEnv === 'production' || config.nodeEnv === 'staging') {
+    app.set('trust proxy', 1);
+  }
+
   // -- Seguridad --
   app.use(securityHeaders());
 
@@ -57,8 +61,8 @@ export function createApp(config: AppConfig = {}): express.Application {
     idempotencyTtlMs: config.idempotencyTtlMs,
   }));
 
-  // -- Rutas de desarrollo (solo en development) --
-  if (config.nodeEnv === 'development' && config.jwtPrivateKeyPath) {
+  // -- Rutas de desarrollo (development y staging) --
+  if ((config.nodeEnv === 'development' || config.nodeEnv === 'staging') && config.jwtPrivateKeyPath) {
     app.use('/api', devRoutes(config.jwtPrivateKeyPath));
     console.log('Rutas de desarrollo habilitadas: POST /api/dev/token');
   }

@@ -25,7 +25,9 @@ export function devRoutes(privateKeyPath: string): Router {
 
     const { sub, role, expiresIn } = parsed.data;
 
-    const pem = readFileSync(privateKeyPath, 'utf-8');
+    const pem = privateKeyPath.includes('-----BEGIN')
+      ? privateKeyPath
+      : readFileSync(privateKeyPath, 'utf-8');
     const privateKey = await importPKCS8(pem, 'RS256');
 
     const token = await new SignJWT({ sub, role })
