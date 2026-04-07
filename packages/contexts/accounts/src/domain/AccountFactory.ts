@@ -4,8 +4,7 @@ import { AccountType } from './value-objects/AccountType';
 import { Currency } from './value-objects/Currency';
 import { Money } from './value-objects/Money';
 import { DailyLimit } from './value-objects/DailyLimit';
-import { InsufficientOpeningBalanceError } from './errors';
-import { MINIMUM_OPENING_BALANCE } from './constants/AccountDefaults';
+import { DEFAULT_ALIAS } from './constants/AccountDefaults';
 import type { ICustomerActiveSpec } from './specifications/ICustomerActiveSpec';
 import type { IMaxAccountsPerTypeSpec } from './specifications/IMaxAccountsPerTypeSpec';
 import type { ICLABEGenerator } from './services/ICLABEGenerator';
@@ -15,8 +14,7 @@ export interface CreateAccountInput {
   readonly customerId: string;
   readonly type: string;
   readonly currency: string;
-  readonly alias: string;
-  readonly initialBalance: number;
+  readonly alias?: string;
   readonly metadata: EventMetadata;
 }
 
@@ -32,7 +30,7 @@ export class AccountFactory {
     const accountId = AccountId.generate();
     const accountType = AccountType.fromString(input.type);
     const currency = Currency.fromString(input.currency);
-    const initialBalance = Money.of(input.initialBalance, currency.value);
+    const initialBalance = Money.of(0, currency.value);
     const dailyLimit = DailyLimit.defaultForType(accountType);
     const clabe = this.clabeGenerator.generate();
 
@@ -40,13 +38,7 @@ export class AccountFactory {
     await this.customerActiveSpec.check(input.customerId);
     await this.maxAccountsSpec.check(input.customerId, accountType);
 
-    // 3. Validar saldo mínimo de apertura (regla pura de dominio)
-    const minimum = MINIMUM_OPENING_BALANCE[accountType.value];
-    if (initialBalance.amount < minimum) {
-      throw new InsufficientOpeningBalanceError(accountType.value, minimum);
-    }
-
-    // 4. Crear agregado
+    // 3. Crear agregado (status: PENDING_ACTIVATION, balance: 0)
     return Account.open({
       accountId,
       customerId: input.customerId,
@@ -55,7 +47,7 @@ export class AccountFactory {
       currency,
       initialBalance,
       dailyLimit,
-      alias: input.alias,
+      alias: input.alias ?? DEFAULT_ALIAS[accountType.value] ?? `Cuenta ${accountType.value}`,
       metadata: input.metadata,
     });
   }

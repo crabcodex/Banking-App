@@ -41,10 +41,10 @@ export function Drawer({ isOpen, onClose, title, children }: DrawerProps) {
       />
       
       {/* Drawer Panel */}
-      <div className="relative w-full max-w-md xl:max-w-xl bg-surface h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-border">
+      <div className="relative w-full max-w-md xl:max-w-xl bg-background h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+        <div className="flex items-center justify-between px-6 py-4 bg-surface border-b border-border">
           <h2 className="text-xl font-semibold text-text-primary">{title}</h2>
-          <Button variant="ghost" size="sm" onClick={onClose} className="!px-2">
+          <Button variant="ghost" size="sm" onClick={onClose} className="!px-2 text-text-secondary hover:text-text-primary hover:bg-surface-hover">
             <X className="w-5 h-5" />
           </Button>
         </div>

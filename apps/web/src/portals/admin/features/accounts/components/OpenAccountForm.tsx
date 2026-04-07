@@ -25,13 +25,11 @@ export function OpenAccountForm({ onSubmit, defaultCustomerId, lockCustomerId }:
       customerId: defaultCustomerId ?? '',
       type: undefined,
       currency: undefined,
-      alias: '',
-      initialBalance: undefined as unknown as number,
     },
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5" noValidate>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 rounded-lg border border-border bg-surface p-5 shadow-card" noValidate>
       {lockCustomerId ? (
         <input type="hidden" {...register('customerId')} />
       ) : (
@@ -59,24 +57,6 @@ export function OpenAccountForm({ onSubmit, defaultCustomerId, lockCustomerId }:
         error={errors.currency?.message}
         defaultValue=""
         {...register('currency')}
-      />
-
-      <Input
-        label="Alias"
-        placeholder="Mi cuenta de ahorro"
-        error={errors.alias?.message}
-        maxLength={50}
-        {...register('alias')}
-      />
-
-      <Input
-        label="Saldo Inicial"
-        type="number"
-        placeholder="0.00"
-        min="0.01"
-        step="0.01"
-        error={errors.initialBalance?.message}
-        {...register('initialBalance', { valueAsNumber: true })}
       />
 
       <Button type="submit" className="mt-2">

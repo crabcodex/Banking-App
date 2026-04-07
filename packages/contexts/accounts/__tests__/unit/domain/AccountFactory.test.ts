@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { AccountFactory } from '../../../src/domain/AccountFactory';
 import { CLABE } from '../../../src/domain/value-objects/CLABE';
-import { CustomerNotActiveError, MaxAccountsReachedError, InsufficientOpeningBalanceError, InvalidAccountTypeError, InvalidCurrencyError } from '../../../src/domain/errors';
+import { CustomerNotActiveError, MaxAccountsReachedError, InvalidAccountTypeError, InvalidCurrencyError } from '../../../src/domain/errors';
 import type { ICustomerActiveSpec } from '../../../src/domain/specifications/ICustomerActiveSpec';
 import type { IMaxAccountsPerTypeSpec } from '../../../src/domain/specifications/IMaxAccountsPerTypeSpec';
 import type { ICLABEGenerator } from '../../../src/domain/services/ICLABEGenerator';
@@ -33,7 +33,6 @@ function validInput() {
     type: 'AHORRO',
     currency: 'MXN',
     alias: 'Mi ahorro',
-    initialBalance: 500,
     metadata,
   };
 }
@@ -49,8 +48,8 @@ describe('AccountFactory', () => {
 
     const account = await factory.create(validInput());
 
-    expect(account.status).toBe('ACTIVE');
-    expect(account.balance).toBe(500);
+    expect(account.status).toBe('PENDING_ACTIVATION');
+    expect(account.balance).toBe(0);
     expect(account.clabe).toBe('012345678901234567');
     expect(mocks.customerActiveSpec.check).toHaveBeenCalledWith('cust-1');
     expect(mocks.maxAccountsSpec.check).toHaveBeenCalled();
@@ -78,18 +77,6 @@ describe('AccountFactory', () => {
     );
 
     await expect(factory.create(validInput())).rejects.toThrow(MaxAccountsReachedError);
-  });
-
-  it('debe lanzar InsufficientOpeningBalanceError si saldo < mínimo', async () => {
-    const mocks = createMocks();
-    const factory = new AccountFactory(
-      mocks.customerActiveSpec,
-      mocks.maxAccountsSpec,
-      mocks.clabeGenerator,
-    );
-
-    const input = { ...validInput(), type: 'CHEQUES', initialBalance: 100 }; // mínimo CHEQUES = 5000
-    await expect(factory.create(input)).rejects.toThrow(InsufficientOpeningBalanceError);
   });
 
   it('debe lanzar error de VO si tipo de cuenta es inválido', async () => {

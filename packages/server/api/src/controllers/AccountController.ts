@@ -31,7 +31,6 @@ export class AccountController {
       type: body.type,
       currency: body.currency,
       alias: body.alias,
-      initialBalance: body.initialBalance,
       metadata,
     };
 

@@ -21,13 +21,6 @@ export const openAccountSchema = z.object({
   currency: z.enum(['MXN', 'USD'], {
     message: 'Selecciona una moneda',
   }),
-  alias: z
-    .string()
-    .min(1, 'El alias es obligatorio')
-    .max(50, 'El alias no puede superar 50 caracteres'),
-  initialBalance: z
-    .number({ message: 'El saldo inicial es obligatorio' })
-    .positive('El saldo inicial debe ser mayor a 0'),
 });
 
 export type OpenAccountFormData = z.infer<typeof openAccountSchema>;

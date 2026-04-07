@@ -10,7 +10,7 @@ import { ReadModelMaxAccountsSpec } from '../../src/infrastructure/specification
 import { AccountListProjection } from '../../src/infrastructure/projections/AccountListProjection';
 import { migrateAccountsReadModel } from '../../src/infrastructure/initializeReadModel';
 import { accountsReadModel } from '../../src/infrastructure/schemas/accountsReadModel';
-import { InvalidAccountTypeError, InsufficientOpeningBalanceError } from '../../src/domain/errors';
+import { InvalidAccountTypeError } from '../../src/domain/errors';
 import type { CommandMetadata } from '@bank/shared';
 import type { OpenAccountCommand } from '../../src/application/commands/OpenAccountCommand';
 
@@ -64,7 +64,6 @@ describe('OpenAccount — Flujo de integración', () => {
       type: 'AHORRO',
       currency: 'MXN',
       alias: 'Mi Ahorro',
-      initialBalance: 1000,
       metadata: meta,
     };
 
@@ -79,8 +78,8 @@ describe('OpenAccount — Flujo de integración', () => {
     expect(account!.customerId).toBe('cust-1');
     expect(account!.type).toBe('AHORRO');
     expect(account!.currency).toBe('MXN');
-    expect(account!.balance).toBe(1000);
-    expect(account!.status).toBe('ACTIVE');
+    expect(account!.balance).toBe(0);
+    expect(account!.status).toBe('PENDING_ACTIVATION');
     expect(account!.alias).toBe('Mi Ahorro');
     expect(account!.clabe).toBe(result.clabe);
   });
@@ -98,26 +97,10 @@ describe('OpenAccount — Flujo de integración', () => {
       type: 'CRIPTO',
       currency: 'MXN',
       alias: 'Cripto',
-      initialBalance: 1000,
       metadata: meta,
     };
 
     await expect(handler.execute(command)).rejects.toThrow(InvalidAccountTypeError);
-  });
-
-  it('debe rechazar saldo insuficiente para CHEQUES', async () => {
-    const command: OpenAccountCommand = {
-      commandName: 'OpenAccount',
-      commandId: 'cmd-int-3',
-      customerId: 'cust-1',
-      type: 'CHEQUES',
-      currency: 'MXN',
-      alias: 'Cheques',
-      initialBalance: 100,
-      metadata: meta,
-    };
-
-    await expect(handler.execute(command)).rejects.toThrow(InsufficientOpeningBalanceError);
   });
 
   it('debe proyectar AccountOpened al read model', async () => {
@@ -128,7 +111,6 @@ describe('OpenAccount — Flujo de integración', () => {
       type: 'AHORRO',
       currency: 'MXN',
       alias: 'Mi Ahorro',
-      initialBalance: 500,
       metadata: meta,
     };
 
@@ -147,6 +129,6 @@ describe('OpenAccount — Flujo de integración', () => {
     expect(rows[0].id).toBe(result.accountId);
     expect(rows[0].customerId).toBe('cust-1');
     expect(rows[0].type).toBe('AHORRO');
-    expect(rows[0].status).toBe('ACTIVE');
+    expect(rows[0].status).toBe('PENDING_ACTIVATION');
   });
 });

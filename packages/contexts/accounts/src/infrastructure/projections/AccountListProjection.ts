@@ -27,7 +27,7 @@ export class AccountListProjection implements IProjection {
           currency: d['currency'] as string,
           balance: String(d['balance']),
           dailyLimit: String(d['dailyLimit']),
-          status: 'ACTIVE',
+          status: 'PENDING_ACTIVATION',
           alias: d['alias'] as string,
           openedAt: new Date(d['openedAt'] as string),
         }).onConflictDoNothing();

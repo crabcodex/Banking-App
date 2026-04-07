@@ -47,7 +47,6 @@ describe('OpenAccountHandler', () => {
       type: 'AHORRO',
       currency: 'MXN',
       alias: 'Test',
-      initialBalance: 500,
       metadata,
     });
 
@@ -65,7 +64,7 @@ describe('OpenAccountHandler', () => {
     const handler = new OpenAccountHandler(factory, repository);
     await expect(handler.execute({
       commandName: 'OpenAccount', commandId: 'cmd-2',
-      customerId: 'x', type: 'AHORRO', currency: 'MXN', alias: 'A', initialBalance: 0, metadata,
+      customerId: 'x', type: 'AHORRO', currency: 'MXN', alias: 'A', metadata,
     })).rejects.toThrow('spec failed');
 
     expect(repository.save).not.toHaveBeenCalled();
@@ -82,7 +81,7 @@ describe('OpenAccountHandler', () => {
     const handler = new OpenAccountHandler(factory, repository);
     await expect(handler.execute({
       commandName: 'OpenAccount', commandId: 'cmd-3',
-      customerId: 'cust-1', type: 'AHORRO', currency: 'MXN', alias: 'Test', initialBalance: 500, metadata,
+      customerId: 'cust-1', type: 'AHORRO', currency: 'MXN', alias: 'Test', metadata,
     })).rejects.toThrow('db error');
   });
 });
