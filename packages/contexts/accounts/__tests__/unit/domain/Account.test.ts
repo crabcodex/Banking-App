@@ -31,10 +31,10 @@ function openTestAccount(overrides?: Partial<{ balance: number; type: string }>)
 
 describe('Account Aggregate', () => {
   describe('open', () => {
-    it('debe crear cuenta con estado ACTIVE y un evento uncommitted', () => {
+    it('debe crear cuenta con estado PENDING_ACTIVATION y un evento uncommitted', () => {
       const account = openTestAccount();
 
-      expect(account.status).toBe('ACTIVE');
+      expect(account.status).toBe('PENDING_ACTIVATION');
       expect(account.balance).toBe(1000);
       expect(account.currency).toBe('MXN');
       expect(account.clabe).toBe('012345678901234567');
@@ -73,7 +73,7 @@ describe('Account Aggregate', () => {
 
       expect(restored.id).toBe(original.id);
       expect(restored.customerId).toBe('cust-123');
-      expect(restored.status).toBe('ACTIVE');
+      expect(restored.status).toBe('PENDING_ACTIVATION');
       expect(restored.balance).toBe(1000);
       expect(restored.uncommittedEvents).toHaveLength(0);
     });
@@ -99,7 +99,7 @@ describe('Account Aggregate', () => {
       expect(restored.type).toBe(original.type);
       expect(restored.currency).toBe(original.currency);
       expect(restored.dailyLimit).toBe(original.dailyLimit);
-      expect(restored.status).toBe('ACTIVE');
+      expect(restored.status).toBe('PENDING_ACTIVATION');
       expect(restored.alias).toBe('Mi cuenta');
     });
   });

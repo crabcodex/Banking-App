@@ -39,8 +39,6 @@ describe('AccountController', () => {
       customerId: '550e8400-e29b-41d4-a716-446655440000',
       type: 'AHORRO',
       currency: 'MXN',
-      alias: 'Mi Ahorro',
-      initialBalance: 1000,
     });
     const res = mockRes();
 
@@ -64,8 +62,6 @@ describe('AccountController', () => {
       customerId: '550e8400-e29b-41d4-a716-446655440000',
       type: 'CHEQUES',
       currency: 'USD',
-      alias: 'Business',
-      initialBalance: 5000,
     });
     const res = mockRes();
 
@@ -77,8 +73,6 @@ describe('AccountController', () => {
         customerId: '550e8400-e29b-41d4-a716-446655440000',
         type: 'CHEQUES',
         currency: 'USD',
-        alias: 'Business',
-        initialBalance: 5000,
       }),
     );
   });
@@ -90,8 +84,6 @@ describe('AccountController', () => {
       customerId: '550e8400-e29b-41d4-a716-446655440000',
       type: 'AHORRO',
       currency: 'MXN',
-      alias: 'Test',
-      initialBalance: 1000,
     });
     const res = mockRes();
 
@@ -111,8 +103,6 @@ describe('AccountController', () => {
       customerId: '550e8400-e29b-41d4-a716-446655440000',
       type: 'AHORRO',
       currency: 'MXN',
-      alias: 'A',
-      initialBalance: 100,
     });
     const res = mockRes();
 

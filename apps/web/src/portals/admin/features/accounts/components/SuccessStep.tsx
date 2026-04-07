@@ -13,7 +13,7 @@ export function SuccessStep({ result }: SuccessStepProps) {
     <Card>
       <CardHeader
         title="Cuenta creada exitosamente"
-        action={<Badge variant="success">Activa</Badge>}
+        action={<Badge variant="warning">Pendiente de activación</Badge>}
       />
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">

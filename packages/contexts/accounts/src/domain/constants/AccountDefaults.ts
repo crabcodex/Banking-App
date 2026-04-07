@@ -18,6 +18,14 @@ export const DEFAULT_DAILY_LIMIT: Record<string, number> = {
   EMPRESARIAL: 1_000_000,
 };
 
+export const DEFAULT_ALIAS: Record<string, string> = {
+  AHORRO: 'Cuenta de Ahorro',
+  CHEQUES: 'Cuenta de Cheques',
+  NOMINA: 'Cuenta de Nómina',
+  INVERSION: 'Cuenta de Inversión',
+  EMPRESARIAL: 'Cuenta Empresarial',
+};
+
 export const VALID_ACCOUNT_TYPES = [
   'AHORRO', 'CHEQUES', 'NOMINA', 'INVERSION', 'EMPRESARIAL',
 ] as const;

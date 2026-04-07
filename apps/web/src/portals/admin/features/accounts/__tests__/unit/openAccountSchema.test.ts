@@ -5,8 +5,6 @@ const VALID_DATA = {
   customerId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
   type: 'AHORRO' as const,
   currency: 'MXN' as const,
-  alias: 'Mi cuenta',
-  initialBalance: 1000,
 };
 
 describe('openAccountSchema', () => {
@@ -72,55 +70,6 @@ describe('openAccountSchema', () => {
       if (!result.success) {
         expect(result.error.issues[0].message).toBe('Selecciona una moneda');
       }
-    });
-  });
-
-  describe('alias', () => {
-    it('rechaza string vacio', () => {
-      const result = openAccountSchema.safeParse({ ...VALID_DATA, alias: '' });
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error.issues[0].message).toBe('El alias es obligatorio');
-      }
-    });
-
-    it('rechaza alias mayor a 50 caracteres', () => {
-      const result = openAccountSchema.safeParse({ ...VALID_DATA, alias: 'x'.repeat(51) });
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error.issues[0].message).toBe('El alias no puede superar 50 caracteres');
-      }
-    });
-
-    it('acepta alias de exactamente 50 caracteres', () => {
-      const result = openAccountSchema.safeParse({ ...VALID_DATA, alias: 'x'.repeat(50) });
-      expect(result.success).toBe(true);
-    });
-  });
-
-  describe('initialBalance', () => {
-    it('rechaza cero', () => {
-      const result = openAccountSchema.safeParse({ ...VALID_DATA, initialBalance: 0 });
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error.issues[0].message).toBe('El saldo inicial debe ser mayor a 0');
-      }
-    });
-
-    it('rechaza numeros negativos', () => {
-      const result = openAccountSchema.safeParse({ ...VALID_DATA, initialBalance: -100 });
-      expect(result.success).toBe(false);
-    });
-
-    it('acepta decimales positivos', () => {
-      const result = openAccountSchema.safeParse({ ...VALID_DATA, initialBalance: 0.01 });
-      expect(result.success).toBe(true);
-    });
-
-    it('rechaza undefined', () => {
-      const { initialBalance: _, ...rest } = VALID_DATA;
-      const result = openAccountSchema.safeParse(rest);
-      expect(result.success).toBe(false);
     });
   });
 });

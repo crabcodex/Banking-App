@@ -67,8 +67,6 @@ describe('SearchAccounts — Flujo de integración', () => {
       customerId: 'cust-1',
       type: 'AHORRO',
       currency: 'MXN',
-      alias: 'Test',
-      initialBalance: 1000,
       metadata: meta,
       ...overrides,
     };
@@ -106,7 +104,7 @@ describe('SearchAccounts — Flujo de integración', () => {
 
   it('debe filtrar por tipo de cuenta con operador IN', async () => {
     await openAndProject({ customerId: 'cust-1', type: 'AHORRO', alias: 'Ahorro' });
-    await openAndProject({ customerId: 'cust-1', type: 'CHEQUES', alias: 'Cheques', initialBalance: 5000 });
+    await openAndProject({ customerId: 'cust-1', type: 'CHEQUES', alias: 'Cheques' });
 
     const query: SearchAccountsQuery = {
       queryName: 'SearchAccounts',

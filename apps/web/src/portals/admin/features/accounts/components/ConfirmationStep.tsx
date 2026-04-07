@@ -24,11 +24,6 @@ function Row({ label, value }: { label: string; value: string }) {
 }
 
 export function ConfirmationStep({ data, onConfirm, onBack, loading }: ConfirmationStepProps) {
-  const formattedBalance = new Intl.NumberFormat('es-MX', {
-    style: 'currency',
-    currency: data.currency,
-  }).format(data.initialBalance);
-
   return (
     <Card>
       <CardHeader
@@ -39,8 +34,6 @@ export function ConfirmationStep({ data, onConfirm, onBack, loading }: Confirmat
         <Row label="ID del Cliente" value={data.customerId} />
         <Row label="Tipo de Cuenta" value={typeLabel(data.type)} />
         <Row label="Moneda" value={currencyLabel(data.currency)} />
-        <Row label="Alias" value={data.alias} />
-        <Row label="Saldo Inicial" value={formattedBalance} />
       </CardContent>
       <CardFooter className="justify-end">
         <Button variant="secondary" onClick={onBack} disabled={loading}>

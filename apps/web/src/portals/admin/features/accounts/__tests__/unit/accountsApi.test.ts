@@ -19,8 +19,6 @@ describe('accountsApi', () => {
       customerId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
       type: 'AHORRO' as const,
       currency: 'MXN' as const,
-      alias: 'Test',
-      initialBalance: 100,
     };
 
     const result = await accountsApi.open(payload);

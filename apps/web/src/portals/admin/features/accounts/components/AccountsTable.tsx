@@ -1,10 +1,11 @@
 import { Badge } from '@/components/ui';
 import type { AccountListItem } from '../api/types';
 
-const statusMap: Record<string, { label: string; variant: 'success' | 'danger' | 'warning' | 'neutral' }> = {
-  ACTIVE: { label: 'Activa', variant: 'success' },
-  FROZEN: { label: 'Congelada', variant: 'warning' },
-  CLOSED: { label: 'Cerrada', variant: 'neutral' },
+const statusMap: Record<string, { label: string; shortLabel: string; variant: 'success' | 'danger' | 'warning' | 'neutral' }> = {
+  PENDING_ACTIVATION: { label: 'Pendiente de activación', shortLabel: 'Pendiente', variant: 'warning' },
+  ACTIVE: { label: 'Activa', shortLabel: 'Activa', variant: 'success' },
+  SUSPENDED: { label: 'Suspendida', shortLabel: 'Suspendida', variant: 'danger' },
+  CLOSED: { label: 'Cerrada', shortLabel: 'Cerrada', variant: 'neutral' },
 };
 
 const typeLabels: Record<string, string> = {
@@ -64,7 +65,7 @@ export function AccountsTable({ items, loading }: AccountsTableProps) {
         </thead>
         <tbody>
           {items.map((account) => {
-            const st = statusMap[account.status] ?? { label: account.status, variant: 'neutral' as const };
+            const st = statusMap[account.status] ?? { label: account.status, shortLabel: account.status, variant: 'neutral' as const };
             return (
               <tr
                 key={account.id}
@@ -89,7 +90,10 @@ export function AccountsTable({ items, loading }: AccountsTableProps) {
                   {currencyFormatter.format(Number(account.balance))}
                 </td>
                 <td className="px-4 py-3">
-                  <Badge variant={st.variant}>{st.label}</Badge>
+                  <Badge variant={st.variant}>
+                    <span className="hidden sm:inline">{st.label}</span>
+                    <span className="sm:hidden">{st.shortLabel}</span>
+                  </Badge>
                 </td>
                 <td className="px-4 py-3 text-text-secondary text-xs hidden lg:table-cell">
                   {dateFormatter.format(new Date(account.openedAt))}

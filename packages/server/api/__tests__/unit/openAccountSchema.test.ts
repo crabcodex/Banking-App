@@ -6,8 +6,6 @@ describe('openAccountSchema', () => {
     customerId: '550e8400-e29b-41d4-a716-446655440000',
     type: 'AHORRO',
     currency: 'MXN',
-    alias: 'Mi Ahorro',
-    initialBalance: 1000,
   };
 
   it('debe aceptar un body válido', () => {
@@ -33,9 +31,14 @@ describe('openAccountSchema', () => {
     expect(result.success).toBe(false);
   });
 
-  it('debe rechazar alias vacío', () => {
+  it('debe aceptar alias opcional', () => {
+    const result = openAccountSchema.safeParse({ ...validBody, alias: 'Mi Ahorro' });
+    expect(result.success).toBe(true);
+  });
+
+  it('debe aceptar alias vacío', () => {
     const result = openAccountSchema.safeParse({ ...validBody, alias: '' });
-    expect(result.success).toBe(false);
+    expect(result.success).toBe(true);
   });
 
   it('debe rechazar alias mayor a 50 caracteres', () => {
@@ -43,21 +46,11 @@ describe('openAccountSchema', () => {
     expect(result.success).toBe(false);
   });
 
-  it('debe rechazar saldo inicial negativo', () => {
-    const result = openAccountSchema.safeParse({ ...validBody, initialBalance: -100 });
-    expect(result.success).toBe(false);
-  });
-
-  it('debe rechazar saldo inicial cero', () => {
-    const result = openAccountSchema.safeParse({ ...validBody, initialBalance: 0 });
-    expect(result.success).toBe(false);
-  });
-
   it('debe rechazar campos faltantes', () => {
     const result = openAccountSchema.safeParse({});
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error.issues.length).toBeGreaterThanOrEqual(5);
+      expect(result.error.issues.length).toBeGreaterThanOrEqual(3);
     }
   });
 

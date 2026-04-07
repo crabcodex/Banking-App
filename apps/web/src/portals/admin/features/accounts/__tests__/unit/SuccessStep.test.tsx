@@ -35,7 +35,7 @@ describe('SuccessStep', () => {
     );
 
     expect(screen.getByText('Cuenta creada exitosamente')).toBeInTheDocument();
-    expect(screen.getByText('Activa')).toBeInTheDocument();
+    expect(screen.getByText('Pendiente de activación')).toBeInTheDocument();
   });
 
   it('llama navigate(-1) al hacer click en Cerrar', async () => {
