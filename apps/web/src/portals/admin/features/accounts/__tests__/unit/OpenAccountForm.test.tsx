@@ -12,8 +12,6 @@ describe('OpenAccountForm', () => {
     expect(screen.getByLabelText('ID del Cliente')).toBeInTheDocument();
     expect(screen.getByLabelText('Tipo de Cuenta')).toBeInTheDocument();
     expect(screen.getByLabelText('Moneda')).toBeInTheDocument();
-    expect(screen.getByLabelText('Alias')).toBeInTheDocument();
-    expect(screen.getByLabelText('Saldo Inicial')).toBeInTheDocument();
   });
 
   it('oculta el campo customerId cuando lockCustomerId es true', () => {
@@ -49,8 +47,6 @@ describe('OpenAccountForm', () => {
     await user.type(screen.getByLabelText('ID del Cliente'), VALID_UUID);
     await user.selectOptions(screen.getByLabelText('Tipo de Cuenta'), 'AHORRO');
     await user.selectOptions(screen.getByLabelText('Moneda'), 'MXN');
-    await user.type(screen.getByLabelText('Alias'), 'Test');
-    await user.type(screen.getByLabelText('Saldo Inicial'), '500');
 
     await user.click(screen.getByRole('button', { name: 'Revisar datos' }));
 
@@ -59,8 +55,6 @@ describe('OpenAccountForm', () => {
         customerId: VALID_UUID,
         type: 'AHORRO',
         currency: 'MXN',
-        alias: 'Test',
-        initialBalance: 500,
       }),
       expect.anything(),
     );

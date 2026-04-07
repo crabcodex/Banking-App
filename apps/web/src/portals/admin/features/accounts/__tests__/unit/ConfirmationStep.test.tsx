@@ -8,8 +8,6 @@ const BASE_DATA: OpenAccountFormData = {
   customerId: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
   type: 'AHORRO',
   currency: 'MXN',
-  alias: 'Mi cuenta principal',
-  initialBalance: 1000,
 };
 
 function renderStep(overrides?: Partial<Parameters<typeof ConfirmationStep>[0]>) {
@@ -32,15 +30,6 @@ describe('ConfirmationStep', () => {
     expect(screen.getByText(BASE_DATA.customerId)).toBeInTheDocument();
     expect(screen.getByText('Ahorro')).toBeInTheDocument();
     expect(screen.getByText('Peso Mexicano (MXN)')).toBeInTheDocument();
-    expect(screen.getByText('Mi cuenta principal')).toBeInTheDocument();
-    expect(screen.getByText('$1,000.00')).toBeInTheDocument();
-  });
-
-  it('formatea saldo en USD correctamente', () => {
-    renderStep({ data: { ...BASE_DATA, currency: 'USD', initialBalance: 2500.5 } });
-
-    expect(screen.getByText('Dólar Estadounidense (USD)')).toBeInTheDocument();
-    expect(screen.getByText(/USD.*2,500\.50|2,500\.50.*USD|\$.*2,500\.50/)).toBeInTheDocument();
   });
 
   it('resuelve labels de todos los tipos de cuenta', () => {

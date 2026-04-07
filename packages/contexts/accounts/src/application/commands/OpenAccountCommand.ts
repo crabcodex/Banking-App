@@ -6,8 +6,7 @@ export interface OpenAccountCommand extends ICommand {
   readonly customerId: string;
   readonly type: string;
   readonly currency: string;
-  readonly alias: string;
-  readonly initialBalance: number;
+  readonly alias?: string;
 }
 
 export interface OpenAccountResult {

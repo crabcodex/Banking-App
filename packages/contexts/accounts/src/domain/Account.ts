@@ -89,7 +89,7 @@ export class Account extends AggregateRoot<AccountEvent> {
         this._currency = d['currency'] as string;
         this._balance = d['balance'] as number;
         this._dailyLimit = d['dailyLimit'] as number;
-        this._status = 'ACTIVE';
+        this._status = 'PENDING_ACTIVATION';
         this._alias = d['alias'] as string;
         this._openedAt = d['openedAt'] as string;
         break;

@@ -11,9 +11,8 @@ export const openAccountSchema = z.object({
   }),
   alias: z
     .string()
-    .min(1, 'El alias no puede estar vacío')
-    .max(50, 'El alias no puede superar 50 caracteres'),
-  initialBalance: z.number().positive('El saldo inicial debe ser positivo'),
+    .max(50, 'El alias no puede superar 50 caracteres')
+    .optional(),
 });
 
 export type OpenAccountBody = z.infer<typeof openAccountSchema>;

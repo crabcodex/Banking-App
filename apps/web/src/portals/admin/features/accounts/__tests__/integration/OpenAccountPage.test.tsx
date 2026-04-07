@@ -43,8 +43,6 @@ describe('OpenAccountPage', () => {
     expect(screen.getByLabelText('ID del Cliente')).toBeInTheDocument();
     expect(screen.getByLabelText('Tipo de Cuenta')).toBeInTheDocument();
     expect(screen.getByLabelText('Moneda')).toBeInTheDocument();
-    expect(screen.getByLabelText('Alias')).toBeInTheDocument();
-    expect(screen.getByLabelText('Saldo Inicial')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Revisar datos' })).toBeInTheDocument();
   });
 
@@ -66,8 +64,6 @@ describe('OpenAccountPage', () => {
     await user.type(screen.getByLabelText('ID del Cliente'), VALID_UUID);
     await user.selectOptions(screen.getByLabelText('Tipo de Cuenta'), 'AHORRO');
     await user.selectOptions(screen.getByLabelText('Moneda'), 'MXN');
-    await user.type(screen.getByLabelText('Alias'), 'Mi cuenta principal');
-    await user.type(screen.getByLabelText('Saldo Inicial'), '1000');
 
     await user.click(screen.getByRole('button', { name: 'Revisar datos' }));
 
@@ -78,8 +74,6 @@ describe('OpenAccountPage', () => {
     expect(screen.getByText(VALID_UUID)).toBeInTheDocument();
     expect(screen.getByText('Ahorro')).toBeInTheDocument();
     expect(screen.getByText('Peso Mexicano (MXN)')).toBeInTheDocument();
-    expect(screen.getByText('Mi cuenta principal')).toBeInTheDocument();
-    expect(screen.getByText('$1,000.00')).toBeInTheDocument();
   });
 
   it('permite regresar al formulario desde la confirmación', { timeout: LONG_TIMEOUT }, async () => {
@@ -89,8 +83,6 @@ describe('OpenAccountPage', () => {
     await user.type(screen.getByLabelText('ID del Cliente'), VALID_UUID);
     await user.selectOptions(screen.getByLabelText('Tipo de Cuenta'), 'CHEQUES');
     await user.selectOptions(screen.getByLabelText('Moneda'), 'USD');
-    await user.type(screen.getByLabelText('Alias'), 'Cuenta de cheques');
-    await user.type(screen.getByLabelText('Saldo Inicial'), '500');
 
     await user.click(screen.getByRole('button', { name: 'Revisar datos' }));
 
@@ -112,8 +104,6 @@ describe('OpenAccountPage', () => {
     await user.type(screen.getByLabelText('ID del Cliente'), VALID_UUID);
     await user.selectOptions(screen.getByLabelText('Tipo de Cuenta'), 'AHORRO');
     await user.selectOptions(screen.getByLabelText('Moneda'), 'MXN');
-    await user.type(screen.getByLabelText('Alias'), 'Mi ahorro');
-    await user.type(screen.getByLabelText('Saldo Inicial'), '5000');
 
     await user.click(screen.getByRole('button', { name: 'Revisar datos' }));
 
@@ -152,8 +142,7 @@ describe('OpenAccountPage', () => {
     await user.type(screen.getByLabelText('ID del Cliente'), VALID_UUID);
     await user.selectOptions(screen.getByLabelText('Tipo de Cuenta'), 'AHORRO');
     await user.selectOptions(screen.getByLabelText('Moneda'), 'MXN');
-    await user.type(screen.getByLabelText('Alias'), 'Test');
-    await user.type(screen.getByLabelText('Saldo Inicial'), '1000');
+
 
     await user.click(screen.getByRole('button', { name: 'Revisar datos' }));
 
@@ -199,8 +188,6 @@ describe('OpenAccountPage', () => {
 
     await user.selectOptions(screen.getByLabelText('Tipo de Cuenta'), 'AHORRO');
     await user.selectOptions(screen.getByLabelText('Moneda'), 'MXN');
-    await user.type(screen.getByLabelText('Alias'), 'Test');
-    await user.type(screen.getByLabelText('Saldo Inicial'), '100');
 
     await user.click(screen.getByRole('button', { name: 'Revisar datos' }));
     await waitFor(() => {
@@ -229,8 +216,7 @@ describe('OpenAccountPage', () => {
     await user.type(screen.getByLabelText('ID del Cliente'), VALID_UUID);
     await user.selectOptions(screen.getByLabelText('Tipo de Cuenta'), 'AHORRO');
     await user.selectOptions(screen.getByLabelText('Moneda'), 'MXN');
-    await user.type(screen.getByLabelText('Alias'), 'Test');
-    await user.type(screen.getByLabelText('Saldo Inicial'), '1000');
+
 
     await user.click(screen.getByRole('button', { name: 'Revisar datos' }));
     await waitFor(() => {
@@ -265,8 +251,6 @@ describe('OpenAccountPage', () => {
     await user.type(screen.getByLabelText('ID del Cliente'), VALID_UUID);
     await user.selectOptions(screen.getByLabelText('Tipo de Cuenta'), 'AHORRO');
     await user.selectOptions(screen.getByLabelText('Moneda'), 'MXN');
-    await user.type(screen.getByLabelText('Alias'), 'Duplicado');
-    await user.type(screen.getByLabelText('Saldo Inicial'), '1000');
 
     await user.click(screen.getByRole('button', { name: 'Revisar datos' }));
     await waitFor(() => {
@@ -296,8 +280,6 @@ describe('OpenAccountPage', () => {
     await user.type(screen.getByLabelText('ID del Cliente'), VALID_UUID);
     await user.selectOptions(screen.getByLabelText('Tipo de Cuenta'), 'AHORRO');
     await user.selectOptions(screen.getByLabelText('Moneda'), 'MXN');
-    await user.type(screen.getByLabelText('Alias'), 'Test');
-    await user.type(screen.getByLabelText('Saldo Inicial'), '1000');
 
     await user.click(screen.getByRole('button', { name: 'Revisar datos' }));
     await waitFor(() => {

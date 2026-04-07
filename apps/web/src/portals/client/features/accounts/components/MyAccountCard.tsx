@@ -2,8 +2,9 @@ import { Badge, Card, CardContent } from '@/components/ui';
 import type { AccountListItem } from '@/portals/admin/features/accounts/api/types';
 
 const statusMap: Record<string, { label: string; variant: 'success' | 'danger' | 'warning' | 'neutral' }> = {
+  PENDING_ACTIVATION: { label: 'Pendiente de activación', variant: 'warning' },
   ACTIVE: { label: 'Activa', variant: 'success' },
-  FROZEN: { label: 'Congelada', variant: 'warning' },
+  SUSPENDED: { label: 'Suspendida', variant: 'danger' },
   CLOSED: { label: 'Cerrada', variant: 'neutral' },
 };
 

@@ -4,8 +4,9 @@ import { Search, X } from 'lucide-react';
 
 const STATUS_OPTIONS = [
   { value: '', label: 'Todos' },
+  { value: 'PENDING_ACTIVATION', label: 'Pendiente de activaci\u00f3n' },
   { value: 'ACTIVE', label: 'Activa' },
-  { value: 'FROZEN', label: 'Congelada' },
+  { value: 'SUSPENDED', label: 'Suspendida' },
   { value: 'CLOSED', label: 'Cerrada' },
 ] as const;
 
